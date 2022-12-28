@@ -1,0 +1,76 @@
+<head>
+  <meta charset="utf-8">
+  <title>Tetramer Functions</title>
+  <style>
+  body {
+    width: 500px;
+ 	margin: auto;
+    font-size: 14px;
+    font-family: Arial;
+  }
+  table, td, th {
+    border: 1px solid #ddd;
+  } 
+  table {
+    font: Arial;
+	font-size: 120%;
+    border-collapse: collapse;
+  } 	
+  tbody>tr>:nth-child(1){	
+     text-align:center;
+  }  
+</style>
+</head>
+<body>
+<h2><b>Adding Tetramers to the Blink Image</b></h2>
+<p>If a tetramer.dat file already exists it will be read in automatically immediately after the blink file.</p> 
+<h2 id="addmodify">Adding, modifying and classifying tetramers</h2> 
+<h3 id="add">Adding a tetramer</h3>
+<p>Press the <b>a</b> key and left click the mouse in the approximate position
+you want the tetramer to appear. The position of the tetramer can be moved
+one pixel at a time using the four arrow keys on the keyboard. The rotation
+is controlled by the mouse wheel. Once you are satisfied with the position
+press the <b>s</b> key to save the tetramer position. Once this is done another tetramer can be added.</p>
+<h3 id="modify">Modifying a tetramer</h3>
+<p>First, identify the tetramer by pressing the <b>m</b> key and left click on the desired tetramer, 
+which will change colour to black. To alter the position and 
+orientation of the tetramer use the four arrow keys and the mouse wheel. Press the <b>s</b> key once finished</p>
+<h3 id="delete">Delete a Tetramer</h3>
+<p>To delete a tetramer, use the <b>m</b> key and left click to highlight it, then use the <b>d</b> key and 
+it will be erased - Warning - this cannot be undone!</p>
+<h3 id="addmodifykeys">Valid Add/Modify keys</h3>
+<center><table style='width:80%'>
+<tr><td>Esc</td><td>Immediately stop addition or modification</td></tr>
+<tr><td>Arrow keys<br>(&larr;, &rarr;, &uarr; and &darr;)</td><td>Move the tetramer 1 pixel in that direction</td></tr>
+<tr><td>Mouse wheel</td><td>Rotate tetramer</td></tr>
+<tr><td>d</td><td>Delete the tetramer (after m)</td></tr>
+<tr><td>s</td><td>Save tetramer after addition or modificatioon</td></tr>
+</table></center>
+<h3 id="classify">Classify a Tetramer</h3>
+<p>To classify a tetramer, press the <b>c</b> key and left click on the desired tetramer to highlight it, 
+then use one of the following keys to classify it.</p>
+<center><table style='width:60%'>
+<tr><td>Esc</td><td>Immediately stop classification</td></tr>
+<tr><td>b</td><td>'both'</td></tr>
+<tr><td>c</td><td>'checkerboard'</td></tr>
+<tr><td>i</td><td>'isolated'</td></tr>
+<tr><td>s</td><td>'side-by-side'</td></tr>
+<tr><td>u</td><td>'unclassified'</td></tr>
+</table></center>
+<p>Once the key is pressed the tetramer is classified</p>
+<h3 id="analyzetet">Analysing the tetramer data</h3>
+<p>The tetramers do not appear by default if loaded from a file - the <b>F7</b> key is a toggle that will cause the added or stored tetramers 
+to appear or disappear.</p>
+<p>The NND values can be displayed at any time by pressing <b>n</b> on the keyboard, but a pixel size of ~1nm is needed to clearly 
+see the values. The NND value will only appear if there are two or more tetramers in a cluster. The blink image can be hidden with 
+the <b>F6</b> after which the tetramers will be shown in outline on a black background with the NNDs if  <b>n</b> 
+has been pressed. Both <b>n</b> and <b>F6</b> are toggles whose effects can be reversed by pressing them again. (The NNDs will no longer appear, the 
+blinks will reappear, and the tetramers will be represented by squares).</p>
+<p>Although the default tetramer width is 27 nm it is possible to change that width by pressing the <b>F8</b> key</p>
+<p>The tetramer and NND data is saved in two files: fn_tetramer.dat and fn_nnd.dat (where fn is the 3dSTM filename). The first file stores
+the (x,y) position of each tetramer, its orientation and cluster number while the second is a list of the calculated NND files. These files 
+can be saved manually at any time by using the F9 key, although finishing an analysis pressing
+any one of the following keys or icons: <b>Esc</b>, <b>Close</b> or the file browser button will automatically calculate the NNDs and save the 
+two files.</p>     
+</body>
+</html>

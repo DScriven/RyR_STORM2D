@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>clustcolor.frag</file>
+        <file>denpnts.vert</file>
+        <file>boundary.vert</file>
+        <file>open_small.bmp</file>
+        <file>tetramers.vert</file>
+        <file>RyR_STORM2D.ico</file>
+        <file>RyR_STORM2D.png</file>
+    </qresource>
+</RCC>

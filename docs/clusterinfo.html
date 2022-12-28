@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cluster Info</title>
+  <style>
+  body {
+    width: 500px;
+ 	margin: auto;
+    font-size: 14px;
+    font-family: Arial;
+  }
+  </style>
+</head>
+<body>
+<h2>Cluster Information<h2> 
+<h3 id="singlecluster">Getting information on a single cluster</h3>
+<p>Pressing the <keybd>F4<keybd> key sets the system into cluster info mode. The cursor becomes a 
+pointing finger <img src="pointingfingercursor.png">. Left clicking on a cluster produces output in the information window 
+similar to that shown below.</p> 
+<pre style="font-size:80%">
+ 	Cluster No. 0 - Neighbourhood Limit = 100 nm
+	Area = 184316 nm<sup>2</sup> -- Alpha = 700 -- Convex Hull Area = 289899 nm<sup>2</sup>
+	# Blinks = 4112 - Density = 0.022
+	# Points = 4029 - Density = 0.022
+	No. of Subclusters = 4 - Areas: 166814, 6892, 2179, 8431 nm<sup>2</sup> 
+	NND = 259.0 nm - NearestArea = 2107.5 nm<sup>2</sup>
+	Min Ellipse : Min = 313 nm - Max = 390 nm
+	Tetramers = 64 - Occupancy = 0.282 (27 nm) = 0.348 (30 nm)
+	Blinks/Tetramer = 64	
+</pre>
+<p>The last two lines concerning tetramers only appear if tetramer squares have been added to the cluster. Two values are given for
+the occupancy</p>
+<p>While in cluster info mode the only keys that can be pressed are <keybd>Esc</keybd> to exit and <keybd>F4</keybd> to exit the mode.</p> 
+<h3 id="allcluster">Getting information on all the clusters in an image</h3>
+<p>Ticking the <img src="saveclusterdata.png"> box and then pressing "Modify" produces a file which contains the following parameters for each cluster in the
+image.</p>
+<pre style="font-size:80%">  
+   ClustNo #Blinks #Points Area NND NearestArea SemiMinorAxis SemiMajorAxis...
+     ConvexHullArea NumSubClusters(nsb) SubClusterAreas(1..nsb)
+</pre>
+<p>Values are separated by a space, one line per cluster. The lines have a variable length dependent on the number of subclusters. 
+The data is saved as an ASCII text file in the same directory as the blink file. If the blink data file is named fn.3dSTM 
+the cluster data file will be named fn_CD[NL].clustval where NL is the current neighbourhood limit (eg. fn_CD100.clustval)
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Reading the blinks</title>
+  <style>
+  body {
+    width: 500px;
+ 	margin: auto;
+    font-size: 14px;
+    font-family: Arial;
+  }
+  </style>
+</head>
+
+<body>
+
+<h2>Reading in the blink file</h2>
+<img src="blankfile.png">
+<p>First press the file browser button to find any 3dSTM file of your choice.</p>
+<h3 id="format">File format</h3>
+<p>Blinks are stored in 3dSTM file, which is a format used solely in our laboratory. The file is an ASCII text file 
+with each blink's parameters on a separate line. Each line has the following parameters:
+<pre>
+    X Y Z &delta;X &delta;Y &delta;Z Amplitude Frame
+</pre>
+<p>where (X, Y, Z) is the position of the blink in nanometers, the respective &delta;'s are the maximum uncertainty (in nm) for
+their respective coordinates, Amplitude is the amplitude of the fitted blink, Frame is the frame in which the blink occurs.
+In this program only the X, Y and Frame parameters are used.</p>
+
+<img src="blinkfile.png">
+<p>Once the file is is entered the <a href="./computation.html" target="_blank">computation parameters</a> must be set
+as well as any optional <a href="./displayparameters.html" target="_blank">display parameters</a>. Press the
+"Load" button and the blinks will be read, the clusters analyzed and their image displayed. The process is displayed in
+the text window. The "Load" button will change to "Modify". When any computational parameter or display is changed, the
+"Modify" key will execute that change.</p>     
+<p>If an associated tetramer file exists it will be read in and assigned to the appropriate clusters.</p>  
+<p>After calculating the clusters the program will summarize some characteristics of the image, such as the following:</p> 
+<pre>
+	Input blinks = 32934; Blink coordinates = 32027; 
+	Ratio = 1.03; Blink Density = 2180.26/μm<sup>2</sup>
+	Image dimensions: X = 4422 nm - Y = 3416 nm
+	Total Area in clusters = 1.226 μm<sup>2</sup> 
+	Area/ImageArea = 8.12 %; Cluster Density = 3.24/μm<sup>2</sup>
+	86 mapped tetramers in input
+	Zoom = 1 - PixelSize = 6.00 nm
+</pre>
+<p>The mapped tetramers line is only present if tetramers have been added to the image.</p>
+<h3 id="nextfile">Processing a new blink image</h3>
+<p>Once you have finished analyzing a blink file, the next one can be read in by pressing the file browser button. The information 
+window is immediately cleared, but the image will not be redrawn until the cluster analysis is complete.</p>
+</body>
+</html>
