@@ -189,7 +189,7 @@ void ViewClusters::Display()
     fi.makeAbsolute();
     setTitle(fi.baseName());
     fXScreenMax = SD->ScreenSize.width()-550;
-    fYScreenMax = SD->ScreenSize.height()-120;
+    fYScreenMax = SD->ScreenSize.height()-80;
     initValues();
 
     if(SD->displayNoThreshold)
@@ -211,15 +211,13 @@ void ViewClusters::Display()
        PixelSize /= dReduce;
     }
     emit AlertMsg(QString("Zoom = %1 - PixelSize = %2 nm").arg(fZoom).arg(PixelSize,0,'f',2),'m');
-    emit AlertMsg(QString("Screen: Xmax = %1 - Ymax = %2 pixels").arg(fXScreenMax).arg(fYScreenMax),' ');
-    emit AlertMsg(QString("Initial Image size: X = %1, Y = %2 pixels").arg(InitXImage).arg(InitYImage),' ');
+    emit AlertMsg(QString("Screen: Xmax = %1 - Ymax = %2 pixels").arg(fXScreenMax).arg(fYScreenMax),'m');
+    emit AlertMsg(QString("Initial Image size: X = %1, Y = %2 pixels").arg(InitXImage).arg(InitYImage),'m');
     Centre = Point_2(SD->Limits.width()/2.0, SD->Limits.height()/2.0);
 
     XImageSize = InitXImage;
     YImageSize = InitYImage;
     setupTransforms();
-
-//    emit AlertMsg(QString("Initial Image size: X = %1, Y = %2").arg(InitXImage).arg(InitYImage),'b');
 
     NoClusters=uint(SD->Clusters.size());
     setupClusterSearch();
@@ -1428,6 +1426,7 @@ void ViewClusters::initializeGL()
     PaintDevice = new QOpenGLPaintDevice;
     PaintDevice->setSize(QSize(InitXImage,InitYImage));
     makeCurrent();
+
     initializeOpenGLFunctions();
     const char* Renderer = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
     emit AlertMsg(QString("Renderer : %1").arg(Renderer),' ');

@@ -31,7 +31,6 @@
 #include "ui_param.h"
 #include <QtWidgets/QDialog>
 #include <qstring.h>
-#include "blinks.h"
 #include "paramvals.h"
 
 class QScrollBar;
@@ -70,7 +69,7 @@ class ParamWnd : public QDialog, private Ui::Parameters
    bool getValues();
 
 public:
-   ParamWnd(QSize Screensize, qreal Screendpi);
+   ParamWnd(QSize Screensize, qreal Scrphysdpi, qreal Scrlogdpi);
 
 public slots:
    void showHelp();
@@ -78,7 +77,6 @@ public slots:
    void setAlert(QString msg, char color);
    void updateProgressBar(int value);
    void setFrameRange(int MinFrame, int MaxFrame);
-//   void writingROI(QString* FileName, int* nROIXY, double* dZ, bool* bPrint);
 
 private slots:
    void CloseDown();

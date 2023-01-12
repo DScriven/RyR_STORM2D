@@ -28,6 +28,7 @@
 **********************************************************************************************/
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 #include <QObject>
 #include <QThread>
 #include <QString>
@@ -40,7 +41,7 @@
 #include "viewclusters.h"
 //#include <QLoggingCategory>
 
-ParamWnd::ParamWnd(QSize Screensize, qreal Screendpi)
+ParamWnd::ParamWnd(QSize Screensize, qreal Screenphysicaldpi, qreal Screenlogicaldpi)
 {
     qRegisterMetaType<ParamVals>("ParamVals");
     setupUi(this);
@@ -52,7 +53,7 @@ ParamWnd::ParamWnd(QSize Screensize, qreal Screendpi)
     InputFile = "";
     Directory->setVisible(false);
     imageVal = new QSettings(QSettings::IniFormat, QSettings::UserScope,
-                             "ChouMooreLabsUBC", "RyR_STORM2D");
+                             "MooreLabUBC", "RyR_STORM2D");
 
     bLoadedFile = false;
     QString pName = imageVal->value("STORMFile", "").toString();
@@ -71,7 +72,7 @@ ParamWnd::ParamWnd(QSize Screensize, qreal Screendpi)
     ParameterValues.MinimumBlinksPerCluster = (imageVal->value("MinimumBlinksPerCluster", 6).toInt());
     ParameterValues.NeighbourhoodLimit  = imageVal->value("NeighbourhoodLimit",30).toDouble();
     ParameterValues.Alpha1stPass = imageVal->value("Alpha1stPass",700).toDouble();
-    ParameterValues.LogDensityThreshold = imageVal->value("LogDensityThreshold",-3.0).toDouble();
+    ParameterValues.LogDensityThreshold = imageVal->value("LogDensityThreshold",-1.6).toDouble();
 
     sb = teMessage->verticalScrollBar();
     leFrameStart->setEnabled(false);
@@ -96,7 +97,7 @@ ParamWnd::ParamWnd(QSize Screensize, qreal Screendpi)
     STORMcalc = new STORMdensity;
     STORMcalc->moveToThread(thread1);
     thread1->start();
-    STORMcalc->setScreenParam(Screensize, Screendpi);
+    STORMcalc->setScreenParam(Screensize, Screenlogicaldpi);
 
     Image = new ViewClusters(STORMcalc);
 
@@ -127,8 +128,21 @@ ParamWnd::ParamWnd(QSize Screensize, qreal Screendpi)
     progressBar->hide();
     pbApply->hide();
     move(0,15);
-//    QLoggingCategory::setFilterRules("*.debug=false\n"
-//                                      "qt.qpa.gl=true");
+    qreal WinDevPixelRatio = this->devicePixelRatio();
+    if(850*WinDevPixelRatio > Screensize.height())
+    {
+        QString msg = QString("Cannot run program - Display Error<b>Scaling of %1% too large to display dialog").arg(qRound(WinDevPixelRatio*100));
+        QMessageBox::critical(nullptr,"Size Error",msg);
+        return;
+    }
+
+    if(Screenphysicaldpi > 160)
+    {
+        QString dpiMessage = QString("Interface may not display properly for dpi > 160<br>Current dpi with scaling = %1<br>Best results - set dpi in range of 96 to 144").arg(Screenphysicaldpi);
+        QMessageBox::warning(nullptr,"DPI Warning",dpiMessage);
+    }
+    //    QLoggingCategory::setFilterRules("*.debug=false\n"
+    //                                      "qt.qpa.gl=true");
 }
 void ParamWnd::CloseDown()
 {
@@ -239,7 +253,7 @@ void ParamWnd::LoadPressed()
     bLoadedFile = true;
     if(getFilesAndValues())
     {
-        setAlert("****************************************************************",'m');
+        setAlert("********************************************",'m');
         setAlert(QString(" File = %1").arg(InputFile),'m');
         emit calculate_clusters(InputFile, ParameterValues);
         pbLoadFiles->hide();

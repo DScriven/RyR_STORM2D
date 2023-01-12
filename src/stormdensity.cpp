@@ -1384,7 +1384,7 @@ bool STORMdensity::CalculateGroupAreas()
 bool STORMdensity::writeClusterData()
 {
     //Output data set
-    QFileInfo fn = FileName;
+    QFileInfo fn(FileName);
     QString fnameb = fn.canonicalPath() + "/" + fn.completeBaseName();
     QString fnout = fnameb + "_CD" + QString().number(int(NeighbourhoodLimit)) + ".clustval";
     QFile rdata;

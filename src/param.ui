@@ -7,8 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>541</width>
-    <height>900</height>
+    <height>850</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>MS Reference Sans Serif</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string/>
@@ -28,6 +33,7 @@
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <bold>true</bold>
     </font>
    </property>
@@ -41,11 +47,12 @@
      <x>10</x>
      <y>180</y>
      <width>521</width>
-     <height>311</height>
+     <height>301</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -58,10 +65,10 @@
    <widget class="QSpinBox" name="sbMinBlinksPerCluster">
     <property name="geometry">
      <rect>
-      <x>32</x>
-      <y>55</y>
+      <x>25</x>
+      <y>60</y>
       <width>71</width>
-      <height>31</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -78,6 +85,7 @@
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>9</pointsize>
      </font>
     </property>
@@ -95,13 +103,14 @@
     <property name="geometry">
      <rect>
       <x>11</x>
-      <y>17</y>
-      <width>111</width>
+      <y>18</y>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
      </font>
     </property>
@@ -112,14 +121,15 @@
    <widget class="QLabel" name="mblbl_per_Cluster">
     <property name="geometry">
      <rect>
-      <x>27</x>
-      <y>31</y>
-      <width>81</width>
+      <x>24</x>
+      <y>32</y>
+      <width>111</width>
       <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
      </font>
     </property>
@@ -127,49 +137,34 @@
      <string>per Cluster</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="gpbx_Threshold">
+   <widget class="QLineEdit" name="leFrameStart">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>90</y>
-      <width>251</width>
-      <height>101</height>
+      <x>343</x>
+      <y>59</y>
+      <width>61</width>
+      <height>25</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="title">
-     <string>Threshold</string>
+    <property name="text">
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="leFrameStart">
-    <property name="geometry">
-     <rect>
-      <x>335</x>
-      <y>50</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>352</x>
-      <y>27</y>
-      <width>31</width>
+      <x>355</x>
+      <y>36</y>
+      <width>41</width>
       <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
       <bold>false</bold>
      </font>
@@ -184,14 +179,15 @@
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>272</x>
-      <y>57</y>
-      <width>61</width>
-      <height>20</height>
+      <x>370</x>
+      <y>10</y>
+      <width>71</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
       <bold>false</bold>
      </font>
@@ -206,14 +202,15 @@
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>438</x>
-      <y>28</y>
-      <width>31</width>
+      <x>436</x>
+      <y>37</y>
+      <width>41</width>
       <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
       <bold>false</bold>
      </font>
@@ -228,57 +225,72 @@
    <widget class="QLineEdit" name="leFrameStop">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>50</y>
-      <width>71</width>
-      <height>31</height>
+      <x>428</x>
+      <y>59</y>
+      <width>61</width>
+      <height>25</height>
      </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLineEdit" name="leMinTetramerArea">
     <property name="geometry">
      <rect>
-      <x>154</x>
-      <y>52</y>
+      <x>170</x>
+      <y>60</y>
       <width>61</width>
-      <height>31</height>
+      <height>25</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>9</pointsize>
      </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>138</x>
-      <y>19</y>
-      <width>101</width>
+      <x>156</x>
+      <y>21</y>
+      <width>121</width>
       <height>16</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Minimum area</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum area&lt;/p&gt;&lt;p&gt; per Tetramer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="mblbl_per_Tetramer">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>30</y>
-      <width>101</width>
-      <height>20</height>
+      <x>160</x>
+      <y>36</y>
+      <width>111</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
      </font>
     </property>
@@ -289,14 +301,15 @@
    <widget class="QLabel" name="label_16">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>58</y>
-      <width>31</width>
-      <height>16</height>
+      <x>237</x>
+      <y>60</y>
+      <width>41</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>8</pointsize>
      </font>
     </property>
@@ -308,13 +321,14 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>184</y>
+      <y>176</y>
       <width>521</width>
       <height>81</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>MS Reference Sans Serif</family>
       <pointsize>10</pointsize>
      </font>
     </property>
@@ -327,14 +341,15 @@
     <widget class="QCheckBox" name="ckDispNumbers">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>380</x>
        <y>23</y>
-       <width>101</width>
+       <width>131</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
+       <family>MS Reference Sans Serif</family>
        <pointsize>8</pointsize>
       </font>
      </property>
@@ -345,14 +360,15 @@
     <widget class="QCheckBox" name="ckDispOuter">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>53</y>
-       <width>111</width>
-       <height>20</height>
+       <x>20</x>
+       <y>23</y>
+       <width>141</width>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
       <font>
+       <family>MS Reference Sans Serif</family>
        <pointsize>8</pointsize>
       </font>
      </property>
@@ -363,14 +379,15 @@
     <widget class="QCheckBox" name="ckDispMinEllipse">
      <property name="geometry">
       <rect>
-       <x>370</x>
-       <y>53</y>
-       <width>121</width>
-       <height>20</height>
+       <x>200</x>
+       <y>23</y>
+       <width>151</width>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
       <font>
+       <family>MS Reference Sans Serif</family>
        <pointsize>8</pointsize>
       </font>
      </property>
@@ -381,14 +398,15 @@
     <widget class="QCheckBox" name="ckDispConvexHull">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>95</x>
        <y>53</y>
-       <width>121</width>
+       <width>151</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
+       <family>MS Reference Sans Serif</family>
        <pointsize>8</pointsize>
       </font>
      </property>
@@ -399,14 +417,15 @@
     <widget class="QCheckBox" name="ckDispExcludedData">
      <property name="geometry">
       <rect>
-       <x>310</x>
-       <y>23</y>
-       <width>141</width>
+       <x>308</x>
+       <y>54</y>
+       <width>161</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
+       <family>MS Reference Sans Serif</family>
        <pointsize>8</pointsize>
       </font>
      </property>
@@ -418,36 +437,104 @@
    <widget class="QCheckBox" name="ckSaveClusterData">
     <property name="geometry">
      <rect>
-      <x>176</x>
-      <y>280</y>
-      <width>181</width>
-      <height>21</height>
+      <x>181</x>
+      <y>268</y>
+      <width>201</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <family>MS Reference Sans Serif</family>
+      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="text">
      <string>Save Cluster Data</string>
     </property>
    </widget>
-   <zorder>gpbx_Threshold</zorder>
-   <zorder>sbMinBlinksPerCluster</zorder>
-   <zorder>label_5</zorder>
-   <zorder>mblbl_per_Cluster</zorder>
-   <zorder>leFrameStart</zorder>
-   <zorder>label_15</zorder>
-   <zorder>label_13</zorder>
-   <zorder>label_14</zorder>
-   <zorder>leFrameStop</zorder>
-   <zorder>leMinTetramerArea</zorder>
-   <zorder>label_9</zorder>
-   <zorder>mblbl_per_Tetramer</zorder>
-   <zorder>label_16</zorder>
-   <zorder>gpbx_Display</zorder>
-   <zorder>ckSaveClusterData</zorder>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>100</y>
+      <width>221</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Reference Sans Serif</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>Threshold</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <widget class="QRadioButton" name="rbNone">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>17</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Reference Sans Serif</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>None</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rbLogThreshold">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>47</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Reference Sans Serif</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Log Threshold</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="leLogDensityThresh">
+     <property name="geometry">
+      <rect>
+       <x>165</x>
+       <y>45</y>
+       <width>51</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Reference Sans Serif</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QLineEdit" name="lePosnFile">
    <property name="geometry">
@@ -460,6 +547,7 @@
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -467,14 +555,15 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>85</y>
+     <x>38</x>
+     <y>84</y>
      <width>41</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -522,8 +611,8 @@
   <widget class="QPushButton" name="pbClose">
    <property name="geometry">
     <rect>
-     <x>235</x>
-     <y>870</y>
+     <x>230</x>
+     <y>810</y>
      <width>71</width>
      <height>25</height>
     </rect>
@@ -567,6 +656,7 @@
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>10</pointsize>
      <bold>true</bold>
     </font>
@@ -586,6 +676,7 @@
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -604,6 +695,7 @@
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <bold>true</bold>
     </font>
    </property>
@@ -615,13 +707,14 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>510</y>
+     <y>490</y>
      <width>521</width>
-     <height>351</height>
+     <height>311</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>8</pointsize>
      <bold>true</bold>
     </font>
@@ -638,6 +731,7 @@
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>12</pointsize>
      <bold>true</bold>
     </font>
@@ -652,15 +746,16 @@
   <widget class="QLineEdit" name="leAlpha1stPass">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>323</y>
-     <width>71</width>
-     <height>31</height>
+     <x>190</x>
+     <y>314</y>
+     <width>51</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <family>MS Reference Sans Serif</family>
+     <pointsize>9</pointsize>
     </font>
    </property>
    <property name="text">
@@ -671,13 +766,14 @@
    <property name="geometry">
     <rect>
      <x>171</x>
-     <y>300</y>
+     <y>291</y>
      <width>90</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -691,29 +787,37 @@
   <widget class="QLineEdit" name="leNeighbourhoodLimit">
    <property name="geometry">
     <rect>
-     <x>55</x>
-     <y>324</y>
-     <width>61</width>
-     <height>31</height>
+     <x>57</x>
+     <y>314</y>
+     <width>51</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <family>MS Reference Sans Serif</family>
+     <pointsize>9</pointsize>
     </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
      <x>117</x>
-     <y>331</y>
+     <y>315</y>
      <width>31</width>
-     <height>16</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>MS Reference Sans Serif</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -725,13 +829,14 @@
    <property name="geometry">
     <rect>
      <x>25</x>
-     <y>286</y>
+     <y>276</y>
      <width>121</width>
      <height>40</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>Microsoft Sans Serif</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -740,63 +845,6 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="Line" name="line">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>284</y>
-     <width>20</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="leLogDensityThresh">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>331</y>
-     <width>61</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="rbLogThreshold">
-   <property name="geometry">
-    <rect>
-     <x>298</x>
-     <y>330</y>
-     <width>141</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Log Threshold</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="rbNone">
-   <property name="geometry">
-    <rect>
-     <x>298</x>
-     <y>306</y>
-     <width>119</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>None</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">

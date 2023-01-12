@@ -40,16 +40,12 @@
 #include "blinks.h"
 #include "blinkvertex.h"
 #include "tetramer.h"
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/lu.hpp>
-#include <boost/numeric/ublas/io.hpp>
 #include <CGAL/Cartesian.h>
 #include "cluster.h"
 #include <utility>
 #include <CGAL/Orthogonal_k_neighbor_search.h>
 #include <CGAL/Search_traits_2.h>
 
-using namespace boost::numeric::ublas;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel    K;
 typedef CGAL::Search_traits_2<K> TreeTraits2;
 typedef CGAL::Orthogonal_k_neighbor_search<TreeTraits2> Neighbor_search2;

@@ -72,14 +72,17 @@ int main(int argc, char *argv[])
         exit(1);
     }
 #else
+    QCoreApplication::setApplicationName("RyR_STORM2D.exe");
+    QCoreApplication::setApplicationVersion("1.1");
+    QCoreApplication::setOrganizationName("Moore Lab, Life Sciences Inst., Univ. British Columbia");
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 #endif
     QApplication app(argc, argv);
     QScreen* scrn = QApplication::primaryScreen();
-    qreal Screendpi = scrn->logicalDotsPerInch();
-    QSize ScreenSize = scrn->size();
-
-    ParamWnd w(ScreenSize, Screendpi);
+    qreal Screenlogicdpi = scrn->logicalDotsPerInch();
+    qreal Screenphysicaldpi = qRound(scrn->physicalDotsPerInch());
+    QSize ScreenSize = scrn->availableSize();
+    ParamWnd w(ScreenSize, Screenphysicaldpi,Screenlogicdpi);
     w.show();
 
     return app.exec();
