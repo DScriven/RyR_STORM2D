@@ -37,6 +37,7 @@
 #include <QInputDialog>
 #include <QSurfaceFormat>
 #include <QOffscreenSurface>
+#include <QOpenGLShaderProgram>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLVertexArrayObject>
 #include <QMatrix4x4>
@@ -2586,9 +2587,10 @@ void ViewClusters:: CreateTIFF(int XSize, int YSize, int imagetype)
    }
 
    QString Description = QString("RyR_STORM2D image : Pixel size = %1 nm").arg(ActualPixelSize,0,'f',1);
+   if(SD->displayConvexHull || SD->displayExcludedBlinks || SD->displayMinEllipse)
+     Description += QString("\nNeighbourhood Limit = %1 nm  - Minimum Blinks Per Cluster = %2 - Minimum Tetramer Size = %3 nm2").arg(SD->NeighbourhoodLimit).arg(SD->MinimumBlinksPerCluster).arg(SD->MinTetramerArea);
    if(!SD->displayNoThreshold)
-     Description += QString("\nNeighbourhood Limit = %1 nm  - Minimum Blinks Per Cluster = %2 - Minimum Tetramer Size = %3 nm<sup>2</sup> - Log Density Threshold = %4").arg(SD->NeighbourhoodLimit).arg(SD->MinimumBlinksPerCluster).arg(SD->MinTetramerArea).arg(SD->LogDensityThreshold);
-
+     Description += QString("\nLog Density Threshold = %1").arg(SD->LogDensityThreshold);
    TiffImage Tiff_Image;
    Tiff_Image.setOutputType(TIFF_RGBA_8bit);
    Tiff_Image.setDim(uint32(XSize), uint32(YSize), 1);
