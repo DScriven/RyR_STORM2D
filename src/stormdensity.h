@@ -46,7 +46,7 @@
 #include <CGAL/Orthogonal_k_neighbor_search.h>
 #include <CGAL/Search_traits_2.h>
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel    K;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Search_traits_2<K> TreeTraits2;
 typedef CGAL::Orthogonal_k_neighbor_search<TreeTraits2> Neighbor_search2;
 typedef Neighbor_search2::Tree Tree2;

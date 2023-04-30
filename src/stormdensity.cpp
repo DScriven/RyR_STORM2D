@@ -207,7 +207,7 @@ void STORMdensity::NewClusterValues(ParamVals ParameterValues, int FrameMin, int
     }
     else
     {
-        if(LogDensityThreshold != ParameterValues.LogDensityThreshold)
+        if(abs(LogDensityThreshold - ParameterValues.LogDensityThreshold) > DBL_EPSILON)
         {
             LogDensityThreshold = ParameterValues.LogDensityThreshold;
             QString exstr  = QString("Blink log density threshold = %1<br>").arg(LogDensityThreshold);
@@ -971,21 +971,16 @@ bool STORMdensity::CalculateDensity()
         ixy++;
         if (ixy == xylimit)
         {
+           blinkVertex v;
            if (ndup == 0)
            {
              j++;
-             blinkVertex v;
              v.setPosition(p2);
-             v.setWeight(double(1));
-             bv.push_back(v);
            }
            else
-           {
-              blinkVertex v;
               v.setPosition(p1);
-              v.setWeight(double(ndup + 1));
-              bv.back()=v;
-           }
+           v.setWeight(double(ndup + 1));
+           bv.push_back(v);
         }
     }
 
@@ -1052,9 +1047,7 @@ bool STORMdensity::CalculateDensity()
         for ( std::vector< Cell_handle >::const_iterator itC = cells.begin(); itC!=cells.end(); ++itC )
         {
             if ( !dt.is_infinite(*itC) )
-            {
-                vol += dt.triangle( *itC  ).area();
-            }
+                  vol += dt.triangle( *itC  ).area();
             else
             {
                 vIT->info().setDummyNeighbor();
@@ -1115,8 +1108,6 @@ void STORMdensity:: GetPointsinClusters(double NLimit, std::vector<Cluster>& Clu
    double sqmax = NLimit*NLimit;
    std::vector<connections>().swap(edgedata);
    std::vector<int> validvertex;
-   int inlimit = 0;
-   int outlimit = 0;
    std::vector<int> endpoint;
    decltype(edgedistance.size()) ie=0;
    for(ie=0; ie != edgedistance.size(); ++ie)
@@ -1125,14 +1116,9 @@ void STORMdensity:: GetPointsinClusters(double NLimit, std::vector<Cluster>& Clu
        std::vector<std::pair<int,double>> a=edgedistance[ie].edgelength;
        for(size_t j=0; j < a.size(); j++)
        {
-          if(a[j].second > sqmax)
-               outlimit++;
-          else
-          {
-               inlimit++;
-               endpoint.push_back(a[j].first);
-          }
-        }
+           if(a[j].second <= sqmax)
+              endpoint.push_back(a[j].first);
+       }
         uint vITposn=edgedistance[ie].stpnt;
         bool bVisitpoint = true;
         if(!(endpoint.size() > 0 && bv[vITposn].density() > -7))
@@ -1140,12 +1126,7 @@ void STORMdensity:: GetPointsinClusters(double NLimit, std::vector<Cluster>& Clu
         edgedata.emplace_back(bVisitpoint,vITposn,endpoint);
         validvertex.push_back(vITposn);
     }
-
-//    emit AlertMsg(QString("No of edges within limit = %1").arg(inlimit/2),' ');
-//    emit AlertMsg(QString("No of edges out of range = %1").arg(outlimit/2),' ');
-
     CalculateClusters(validvertex, Clust );
-
 }
 void STORMdensity::CalculateClusterProperties_2ndpass()
 {
@@ -1386,7 +1367,7 @@ bool STORMdensity::writeClusterData()
     //Output data set
     QFileInfo fn(FileName);
     QString fnameb = fn.canonicalPath() + "/" + fn.completeBaseName();
-    QString fnout = fnameb + "_CD" + QString().number(int(NeighbourhoodLimit)) + ".clustval";
+    QString fnout = fnameb + "_NL" + QString().number(int(NeighbourhoodLimit)) + ".clustval";
     QFile rdata;
     rdata.setFileName(fnout);
     if(!rdata.open(QFile::WriteOnly))
