@@ -3,8 +3,8 @@
 IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\David\\Documents\\RyR_STORM2D\\src\\RyR_STORM2D.ico"
 
 VS_VERSION_INFO VERSIONINFO
-	FILEVERSION 1,1,0,0
-	PRODUCTVERSION 1,1,0,0
+	FILEVERSION 1,2,0,0
+	PRODUCTVERSION 1,2,0,0
 	FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 	FILEFLAGS VS_FF_DEBUG
@@ -21,11 +21,11 @@ VS_VERSION_INFO VERSIONINFO
 			BEGIN
 				VALUE "CompanyName", "Moore Lab, Life Sci. Inst., Univ of British Columbia\0"
 				VALUE "FileDescription", "\0"
-				VALUE "FileVersion", "1.1.0.0\0"
+				VALUE "FileVersion", "1.2.0.0\0"
 				VALUE "LegalCopyright", "\0"
 				VALUE "OriginalFilename", "RyR_STORM2D.exe\0"
 				VALUE "ProductName", "RyR_STORM2D\0"
-				VALUE "ProductVersion", "1.1.0.0\0"
+				VALUE "ProductVersion", "1.2.0.0\0"
 			END
 		END
 		BLOCK "VarFileInfo"
