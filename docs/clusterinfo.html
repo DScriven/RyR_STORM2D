@@ -31,10 +31,10 @@ similar to that shown below.</p>
 	Blinks/Tetramer = 64	
 </pre>
 <p>The last two lines concerning tetramers only appear if tetramer squares have been added to the cluster. Two values are given for
-the occupancy</p>
+the occupancy dependent on the tetramer size</p>
 <p>While in cluster info mode the only keys that can be pressed are <keybd>Esc</keybd> to exit and <keybd>F4</keybd> to exit the mode.</p> 
-<h3 id="allcluster">Getting information on all the clusters in an image</h3>
-<p>Ticking the <img src="saveclusterdata.png"> box and then pressing "Modify" produces a file which contains the following parameters for each cluster in the
+<h3 id="allcluster">Saving cluster information</h3>
+<p><img src="saveclusterdata.png"><br>Ticking this box and then pressing "Modify" produces a file which contains the following parameters for each cluster in the
 image.</p>
 <pre style="font-size:80%">  
    ClustNo #Blinks #Points Area NND NearestArea SemiMinorAxis SemiMajorAxis...
@@ -42,6 +42,17 @@ image.</p>
 </pre>
 <p>Values are separated by a space, one line per cluster. The lines have a variable length dependent on the number of subclusters. 
 The data is saved as an ASCII text file in the same directory as the blink file. If the blink data file is named fn.3dSTM 
-the cluster data file will be named fn_CD[NL].clustval where NL is the current neighbourhood limit (eg. fn_CD100.clustval)
+the cluster data file will be named fn_NL[NL value].clustval where NL is the current neighbourhood limit (eg. fn_NL100.clustval)
+<h3 id="allclusterblinks">Saving cluster blinks</h3>
+<p><img src="saveclusterblinks.png"><br>Ticking this box and then pressing "Modify" produces a file which contains the following parameters for each cluster in the
+blink in a cluster that satisfied the conditions set in the program.</p>
+<pre style="font-size:80%">  
+   ClustNo X Y FrameNo Amplitude LogDensity
+</pre>
+<p>Values are separated by a tab, one line per blink.  
+The data is saved as an ASCII text file in the same directory as the blink file. If the blink data file is named fn.3dSTM 
+the cluster blink file will be named fn.clustblinks. This file was used to generate data sets or TIF images for calculating the resolution 
+using the Fourier Ring Correlation. NOTE: This file only has to be saved once for a set of parameters 
+<a href="./computation.html#SCD">Computational Parameters</a> as it is independent of the neighbourhood limit.</p>
 </body>
 </html>

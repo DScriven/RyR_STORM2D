@@ -437,8 +437,8 @@
    <widget class="QCheckBox" name="ckSaveClusterData">
     <property name="geometry">
      <rect>
-      <x>181</x>
-      <y>268</y>
+      <x>290</x>
+      <y>270</y>
       <width>201</width>
       <height>20</height>
      </rect>
@@ -446,7 +446,7 @@
     <property name="font">
      <font>
       <family>MS Reference Sans Serif</family>
-      <pointsize>8</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="text">
@@ -534,6 +534,25 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+   </widget>
+   <widget class="QCheckBox" name="ckSaveClusterBlinks">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>270</y>
+      <width>201</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Reference Sans Serif</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Save Cluster Blinks</string>
+    </property>
    </widget>
   </widget>
   <widget class="QLineEdit" name="lePosnFile">

@@ -17,19 +17,21 @@
 
 <body>
 
-<h2>Setting Computational Parameters</h2>
+<h2 id="SCD">Setting Computational Parameters</h2>
 
 <center><img src="ComputationalParameters.png"></center>
 
 <p>There are four values that must be set before the blink data set can be loaded 
 (values in the image are defaults):</p>
 <h3 id="NL">Neighbourhood limit</h3>
-<p>The neighbourhood limit has a value between 30 and 300 nm. The first time an analysis is done 
+<p>The neighbourhood limit (NL) has a value between 30 and 300 nm. The first time an analysis is done 
 of a data set, a 1st pass at 30 nm is done to calculate the base cluster areas 
-followed by a second pass to calculate the size of the clusters at the neighbourhood limit chosen. All
-subsequent invocations of the neighbourhood limit on the current data set will use the base and a 2nd pass. 
+followed by a second pass to calculate the size of the clusters at the NL chosen. All
+subsequent invocations of the NL on the current data set will use the base and a 2nd pass. 
 Cluster data is not saved between different limits, so to avoid repeat calculations it is recommended that
 the <a href="clusterinfo.html#allcluster">"Save cluster data" box</a> be clicked.</p> 
+<p>NOTE: The cluster blink data file saved with the <a href="clusterinfo.html#allclusterblinks">"Save cluster blinks"</a> box
+is independent of the NL and need only be saved once per 3dSTM blink file.</p> 
 <h3 id="minblink">Minimum Blinks per Tetramer</h3>
 <p>This value is checked first after the clusters are calculated. If this value is not met no further analysis is
 done and the points are added to the <a href="displayparameters.html#excluded" target="_blank">excluded blinks</a> list.</p>
@@ -50,6 +52,6 @@ above 700 loosens the boundary fit.</p>
 <image src="frameparameters.png">
 <p>The frame numbers (i.e the number of images collected) can only be changed after the first run. It is limited by the values shown after the first
 analysis. Changing these numbers means that the base clusters have to be recalculated, necessitating two passes. These base clusters remain true of
-for whatever NLs are used and until the next change in the frames. They can be entered using the "Modify" key. </p>   
+for whatever NLs are used and until the next change in the frame range.</p>   
 </body>
 </html>

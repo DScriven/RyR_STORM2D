@@ -81,6 +81,7 @@ ParamWnd::ParamWnd(QSize Screensize, qreal Screenphysicaldpi, qreal Screenlogica
     ckDispOuter->setChecked(false);
     ckDispConvexHull->setChecked(false);
     ckDispMinEllipse->setChecked(false);
+    ckSaveClusterBlinks->setChecked(false);
     ckSaveClusterData->setChecked(false);
     rbNone->setChecked(true);
     leLogDensityThresh->setText(QString().setNum(ParameterValues.LogDensityThreshold));
@@ -349,6 +350,10 @@ bool ParamWnd::getValues()
     ParameterValues.SaveClusterData=false;
     if(ckSaveClusterData->isChecked())
         ParameterValues.SaveClusterData=true;
+
+    ParameterValues.SaveClusterBlinks=false;
+    if(ckSaveClusterBlinks->isChecked())
+        ParameterValues.SaveClusterBlinks=true;
 
     ParameterValues.DispNoThreshold=false;
     if(rbNone->isChecked())

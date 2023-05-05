@@ -14,6 +14,8 @@ protected:
     Point_2   pos;    // stores particle's position
     double _weight; // weight of each particle
     double _density;// the value of the density will be computed later using the DTFE density interpolation at each vertex position
+    std::vector<double> amp;
+    std::vector<int> frame;
     int vno;
     
 public:
@@ -36,10 +38,7 @@ public:
 
     // do not modify the following
     inline Point_2& position() { return pos;}
-    inline const double& position(int const i) { if (i==0)
-                                               return pos.x();
-                                            else
-                                               return pos.y();}
+    inline const double& position(int const i) { if (i==0) return pos.x(); else return pos.y();}
     inline void setPosition(Point_2 p) { pos = p;}
     inline void setVertexNo(int i) { vno = i;}
     inline void setDummy() { dummy=true; dummyNeighbor=true; setDensity(0.); }
@@ -58,5 +57,12 @@ public:
     // functions to access the density
     inline double& density() { return _density;}
     inline void setDensity(double const d) { _density = d;}
+    inline std::vector<double>& amplitude() {return amp;}
+    inline std::vector<int>& frameNos() {return frame;}
+    inline void addAmp(double Amp) {amp.push_back(Amp);}
+    inline void addFrame(int Frame) {frame.push_back(Frame);}
+    inline void setAmp(std::vector<double> a) {amp =a;}
+    inline void setFrame(std::vector<int> f) {frame =f;}
+
 };
 #endif

@@ -2,7 +2,7 @@
 * RyR_STORM2D is a program designed to analyse blink data from the surface of ventricular
 * myocytes.
 *
-* Copyright David Scriven, 2022.
+* Copyright David Scriven, 2022, 2023.
 *
 * Moore Laboratory, Life Sciences Institute,  2350 Health Sciences
 * Mall, University of British Columbia, Vancouver, Canada, V6T 1Z3
@@ -49,6 +49,13 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <tuple>
+
+struct BlinkInfo
+{
+    Point_2 posn;
+    int frame;
+    double amp;
+};
 
 using namespace std;
 
@@ -127,6 +134,7 @@ void STORMdensity::CalculateStructure(QString File, ParamVals ParameterValues)
     displayConvexHull = ParameterValues.DispConvexHull;
     displayMinEllipse = ParameterValues.DispMinEllipse;
     bSaveClusterData = ParameterValues.SaveClusterData;
+    bSaveClusterBlinks = ParameterValues.SaveClusterBlinks;
 
  // set cluster statics
     Cluster::MinBlinksPerCluster = MinimumBlinksPerCluster;
@@ -267,6 +275,11 @@ void STORMdensity::NewClusterValues(ParamVals ParameterValues, int FrameMin, int
         bSaveClusterData = ParameterValues.SaveClusterData;
         Changes += (QString("Cluster Data ") + QString((bSaveClusterData) ? "IS " : "IS NOT ") + QString("being saved<br>"));
     }
+    if(bSaveClusterBlinks != ParameterValues.SaveClusterBlinks)
+    {
+        bSaveClusterBlinks = ParameterValues.SaveClusterBlinks;
+        Changes += (QString("Clusters ") + QString((bSaveClusterBlinks) ? "ARE " : "ARE NOT ") + QString("being saved<br>"));
+    }
     if(std::abs(NeighbourhoodLimit - ParameterValues.NeighbourhoodLimit) > DBL_EPSILON)
     {
         NeighbourhoodLimit = ParameterValues.NeighbourhoodLimit;
@@ -359,6 +372,9 @@ void STORMdensity::NewClusterValues(ParamVals ParameterValues, int FrameMin, int
     QString RedrawType;
     if(displayExcludedBlinks)
       RedrawType = "Points";
+
+    if(bSaveClusterBlinks)
+        writeClusterBlinks();
 
     if(bSaveClusterData)
        writeClusterData();
@@ -918,7 +934,7 @@ bool STORMdensity::CalculateDensity()
     YInputOffset = minY-10;
 //    emit AlertMsg(QString("Min X = %1 - Min Y = %2").arg(minX).arg(minY),' ');
 
-    std::vector<Point_2> xyposn;
+    std::vector<BlinkInfo> blinkposn;
 
     double minnewX = 1.e30;
     double minnewY = 1.e30;
@@ -933,39 +949,59 @@ bool STORMdensity::CalculateDensity()
         minnewY = (newY < minnewY) ? newY : minnewY;
         maxnewX = (newX > maxnewX) ? newX : maxnewX;
         maxnewY = (newY > maxnewY) ? newY : maxnewY;
-        Point_2 v=Point_2(newX,newY);
-        xyposn.push_back(v);
+        BlinkInfo b;
+        b.posn = Point_2(newX,newY);
+        b.frame = a.pic_no;
+        b.amp = a.Amplitude;
+        blinkposn.push_back(b);
     }
 
     emit AlertMsg(QString("New Min X = %1 - New Min Y = %2").arg(minnewX).arg(minnewY),' ');
     emit AlertMsg(QString("New Max X = %1 - New Max Y = %2").arg(maxnewX).arg(maxnewY),' ');
     Limits= QRectF(minnewX,minnewY,maxnewX,maxnewY);
 
-    stable_sort(xyposn.begin(),xyposn.end());
+    std::stable_sort(blinkposn.begin(),blinkposn.end(), [&](auto &a, auto &b){
+        return  (a.posn.x() < b.posn.x()) ? true : (a.posn.x() == b.posn.x()) ?  a.posn.y() < b.posn.y() : false;});
 
-    decltype(xyposn.size()) ixy=0;
+    decltype(blinkposn.size()) ixy=0;
 
     std::vector<blinkVertex>().swap(bv);
 
     ixy = 0;
     int ndup = 0;
     uint j = 0;
-    uint xylimit=uint(xyposn.size())-1;
+    uint xylimit=uint(blinkposn.size())-1;
+    std::vector<double> tAmp;
+    std::vector<int> tFrame;
     while (ixy < xylimit)
     {
-        Point_2 p1 = xyposn[ixy];
-        Point_2 p2 = xyposn[ixy+1];
+        Point_2 p1 = blinkposn[ixy].posn;
+        Point_2 p2 = blinkposn[ixy+1].posn;
         if (p2 != p1)
         {
             j++;
             blinkVertex v;
             v.setPosition(p1);
-            v.setWeight(double(ndup + 1));
+         v.setWeight(double(ndup+1));
+         if(ndup > 0)
+         {
+            for(uint k = 0; k < tAmp.size(); k++)
+            {
+                v.addAmp(tAmp[k]);
+                v.addFrame(tFrame[k]);
+            }
+            tAmp.clear();
+            tFrame.clear();
+         }
+         v.addAmp(blinkposn[ixy].amp);
+         v.addFrame(blinkposn[ixy].frame);
             bv.push_back(v);
             ndup = 0;
         }
         else
         {
+           tAmp.push_back(blinkposn[ixy].amp);
+           tFrame.push_back(blinkposn[ixy].frame);
             ndup++;
         }
         ixy++;
@@ -978,8 +1014,19 @@ bool STORMdensity::CalculateDensity()
              v.setPosition(p2);
            }
            else
+            {
               v.setPosition(p1);
-           v.setWeight(double(ndup + 1));
+              for(uint k = 0; k < tAmp.size(); k++)
+              {
+                v.addAmp(tAmp[k]);
+                v.addFrame(tFrame[k]);
+              }
+              tAmp.clear();
+              tFrame.clear();
+            }
+            v.addAmp(blinkposn[ixy].amp);
+            v.addFrame(blinkposn[ixy].frame);
+            v.setWeight(double(ndup+1));
            bv.push_back(v);
         }
     }
@@ -1161,6 +1208,8 @@ void STORMdensity::CalculateClusterProperties_2ndpass()
     emit AlertMsg(QString("<br>Input blinks = %1; Blink coordinates = %2; <br> Ratio = %3; Blink Density = %4/%5").arg(BlinksIn).arg(BlinkCoordinates).arg(BlinkRatio,0,'f',2).arg(BlinkDensity,0,'f',2).arg(AreaUnit),'m');
     emit AlertMsg(QString("Image dimensions: X = %1 nm - Y = %2 nm").arg(Limits.width()).arg(Limits.height()),'m');
     emit AlertMsg(QString("Total Area in clusters = %1 %2 <br> Area/ImageArea = %3 %; Cluster Density = %4/%5").arg(TotalClusterArea,0,'f',bdec).arg(AreaUnit).arg(Occupancy,0,'f',2).arg(ClusterDensity,0,'f',2).arg(AreaUnit),'m');
+    if(bSaveClusterBlinks)
+       writeClusterBlinks();
 }
 void STORMdensity::secondPass()
 {
@@ -1183,6 +1232,8 @@ void STORMdensity::secondPass()
                v.setWeight(a[k].NoBlinks);
                v.setDensity(a[k].density);
                v.setPosition(a[k].posn);
+               v.setFrame(a[k].frame);
+               v.setAmp(a[k].amp);
                bv.push_back(v);
             }
        }
@@ -1362,6 +1413,40 @@ bool STORMdensity::CalculateGroupAreas()
     }
     return true;
 }
+bool STORMdensity::writeClusterBlinks()
+{
+    //Output points, cluster nos and density
+    QFileInfo fn(FileName);
+    QString fnameb = fn.canonicalPath() + "/" + fn.completeBaseName();
+    QString fnout = fnameb + ".clustblinks";
+    QFile rdata;
+    rdata.setFileName(fnout);
+    if(!rdata.open(QFile::WriteOnly))
+    {
+        emit AlertMsg(QString("Cannot open %1 for writing").arg(fnout),'r');
+        return false;
+    }
+    emit AlertMsg("Writing cluster blinks...\n",' ');
+
+    QTextStream rout(&rdata);
+    uint noC=uint(Clusters.size());
+    for(uint i1=0; i1 < noC; i1++)
+    {
+        std::vector<ClusterPoint> cpoints=Clusters[i1].getClustPoints();
+        uint np=uint(cpoints.size());
+        for(uint i2=0; i2 < np; i2++)
+        {
+            ClusterPoint cp=cpoints[i2];
+            int X = cp.posn.x();
+            int Y = cp.posn.y();
+            for (int i=0; i < cp.NoBlinks; i++)
+               rout << i1 << "\t" << X << "\t" << Y << "\t"  << cp.frame[i] << "\t" << cp.amp[i] << "\t" << cp.logdensity << "\n";
+        }
+    }
+    rdata.close();
+    emit AlertMsg(QString("Wrote %1 to disk").arg(fnout),' ');
+    return true;
+}
 bool STORMdensity::writeClusterData()
 {
     //Output data set
@@ -1505,6 +1590,8 @@ void STORMdensity::CalculateClusters(std::vector<int>& validvertex, std::vector<
        ClusterPoint cp;
        cp.posn=bv[pnt].position();
        cp.density = bv[pnt].density();
+       cp.frame = bv[pnt].frameNos();
+       cp.amp = bv[pnt].amplitude();
        cp.logdensity = log10(cp.density);
        cp.NoBlinks = bv[pnt].weight();
        nNoBlinks += uint(cp.NoBlinks);

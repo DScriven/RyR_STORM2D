@@ -87,9 +87,7 @@ ViewClusters::ViewClusters(STORMdensity* SCalc) : QOpenGLWindow()
     initValues();
 
     degtorad=4.0*atan(1.0)/180.0;    // some values we need
-    tetramerwidth=27;
     sqrt2 = sqrt(2.0);
-    tetramerdiag=tetramerwidth*sqrt2/2;
     fortyfivedeg = 45.0 * degtorad;
     nPalette = 2;
 
@@ -154,6 +152,8 @@ void ViewClusters::initValues()
     fZoomDelta = 0.25f;
     PointSize = 1;
     ExPointSize = 2;
+    tetramerwidth=27;
+    tetramerdiag=tetramerwidth/sqrt2;
     ImageOffset = Point_2(0,0);
     xshift = 0.0f;
     yshift = 0.0f;
@@ -726,11 +726,12 @@ void ViewClusters::changeTetramerWidth()
 {
     bool ok;
     double tsize = QInputDialog::getDouble(nullptr, tr("Change Tetramer width"),
-                                         tr("Tetramer width (nm):"), 27.0, 24.0, 50.0, 1, &ok);
+                                         tr("Tetramer width (nm):"), tetramerwidth, 24.0, 50.0, 1, &ok);
     if(!ok)
       return;
     tetramerwidth = tsize;
     tetramerdiag = tetramerwidth/sqrt2;
+    emit AlertMsg(QString("Tetramer Width = %1 nm").arg(tetramerwidth),'m');
     if(bPlacingTetramer||bModifyTetramer||bClassifyTetramer)
         loadSingleTetramerData();
     loadTetramerData();

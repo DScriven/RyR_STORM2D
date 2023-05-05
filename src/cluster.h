@@ -70,6 +70,8 @@ struct ClusterPoint
     Point_2 posn;
     double density;
     double logdensity;
+    std::vector<int> frame;
+    std::vector<double> amp;
     int NoBlinks;
 };
 struct ClusterPoint_less_x
