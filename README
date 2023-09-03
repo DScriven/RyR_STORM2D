@@ -10,10 +10,12 @@ The program uses a two-step approach to define the clusters and how they are gro
 according to the neighbourhood limit.
 
 To compile this program you would need Qt5 (https://www.qt.io/ - Open Source ver 5.15.2) 
-and access to CGAL (https://www.cgal.org/  ver 5.5 or later) and libtiff ver 4 or later 
-(http://www.simplesystems.org/libtiff/). OpenGL ver 4.3 or later is also required.
+and a C++ compiler that supports C++17. The program also requires access to 
+CGAL (https://www.cgal.org/  ver 5.5 or later) and libtiff ver 3 later 
+(http://www.simplesystems.org/libtiff/) as well as OpenGL ver 4.3 or later. This program 
+can be compiled using Qt Creator in either Windows or Linux.
  
-To install this program on your Windows computer download RyR_STORM2D_Installer.exe. 
+To directly install this program on your a computer download RyR_STORM2D_Installer.exe. 
 This program works on both Windows 10 & 11. The documents, installed as 
 a subdirectory of where the program is installed, have a full description of its functions.
 These documents can also be accessed from within the program using the F1 key.
