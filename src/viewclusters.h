@@ -88,6 +88,7 @@ public:
 public slots:
     void Redraw(QString elements);
     void Display();
+    void FBOTiff(double FBOMag, int dpi);
 private:
     void keyPressEvent( QKeyEvent *e ) override;
     void mousePressEvent( QMouseEvent *e ) override;
@@ -117,7 +118,8 @@ private:
     void calculatePixelSize();
     void readTetramerFile();
     void reassignClusterNos();
-    void CreateTIFF(int Xdim, int Ydim, int imagetype);
+
+    void CreateTIFF(int Xdim, int Ydim, int imagetype, int ImageDPI, double Magnification);
 
     Point_2 LimitMouse(int x, int y);
     template <class T> T to2DViewportPoint(T posn);
@@ -146,8 +148,8 @@ private:
     QAction* createScreenShotAct;
     QAction* createFBOImageAct;
     QAction* BlackBreakAct;
-    QAction* increasePointSizeAct;
-    QAction* decreasePointSizeAct;
+    QAction* increaseBlinkSizeAct;
+    QAction* decreaseBlinkSizeAct;
     QAction* LineAct;
     QAction* ZoomInAct;
     QAction* ZoomOutAct;
@@ -211,6 +213,7 @@ private:
     double fortyfivedeg;
 
     double fFBOZoom;
+    int ImageDPI;
 
     std::vector<int> TetMappedCluster;
     std::map<uint,uint> Tetcount;
@@ -284,19 +287,21 @@ private:
     QVector4D ScaleBarColour;
     QVector2D ScaleBar[4];
 
-    int PointSize;
-    int ExPointSize;
+    int BlinkSize;
+    int ExBlinkSize;
     float denThreshold;
     int DenThresholdLoc;
-    int PointSizeLoc;
-    int ExPointSizeLoc;
+    int BlinkSizeLoc;
+    int ExBlinkSizeLoc;
 
     int TransparencyLoc;
     int TransformColClustLoc;
     int TransformBoundClustLoc;
     int TransformTetramerLoc;
-    int ThresholdColourIndexLoc;
-    int ThresholdColourIndex;
+    int BelowThresholdColourIndexLoc;
+    int BelowThresholdColourIndex;
+    int AboveThresholdColourIndexLoc;
+    int AboveThresholdColourIndex;
     int BoundaryColourLoc;
     int nPalette;
     int imagetype;
@@ -309,6 +314,7 @@ private:
 
     enum CUD{black, orange, skyblue, bluegreen, yellow, blue, vermillion, redpurple};
     QVector4D CUD_Colours[8];
+
     QMatrix4x4 orthoproj;
     QMatrix4x4 translation;
     QMatrix4x4 scaling;
@@ -352,10 +358,10 @@ private slots:
     void CreateFBOImage();
     void imageZoomIn();
     void imageZoomOut();
-    void increasePointSize();
-    void decreasePointSize();
-    void increaseExPointSize();
-    void decreaseExPointSize();
+    void increaseBlinkSize();
+    void decreaseBlinkSize();
+    void increaseExBlinkSize();
+    void decreaseExBlinkSize();
 
     void addTetramer();
     void saveTetramer();

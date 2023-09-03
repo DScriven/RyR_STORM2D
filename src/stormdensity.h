@@ -101,7 +101,6 @@ protected:
     void secondPass_Clusters();
     void secondPass_NL30();
     bool CalculateGroupAreas();
-    bool writeClusterBlinks();
     bool writeClusterData();
     bool readTetramers();
 

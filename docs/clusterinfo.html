@@ -22,8 +22,8 @@ similar to that shown below.</p>
 <pre style="font-size:80%">
  	Cluster No. 0 - Neighbourhood Limit = 100 nm
 	Area = 184316 nm<sup>2</sup> -- Alpha = 700 -- Convex Hull Area = 289899 nm<sup>2</sup>
-	# Blinks = 4112 - Density = 0.022
-	# Points = 4029 - Density = 0.022
+	# Blinks = 4112 - Density = 22310/&mu;m<sup>2</sup>
+	# Points = 4029 - Density = 21859/&mu;m<sup>2</sup>
 	No. of Subclusters = 4 - Areas: 166814, 6892, 2179, 8431 nm<sup>2</sup> 
 	NND = 259.0 nm - NearestArea = 2107.5 nm<sup>2</sup>
 	Min Ellipse : Min = 313 nm - Max = 390 nm
@@ -32,27 +32,16 @@ similar to that shown below.</p>
 </pre>
 <p>The last two lines concerning tetramers only appear if tetramer squares have been added to the cluster. Two values are given for
 the occupancy dependent on the tetramer size</p>
-<p>While in cluster info mode the only keys that can be pressed are <keybd>Esc</keybd> to exit and <keybd>F4</keybd> to exit the mode.</p> 
+<p>While in cluster info mode the only keys that can be pressed are <keybd>Esc</keybd> or <keybd>F4</keybd> to exit the mode.</p> 
 <h3 id="allcluster">Saving cluster information</h3>
-<p><img src="saveclusterdata.png"><br>Ticking this box and then pressing "Modify" produces a file which contains the following parameters for each cluster in the
+<p><center><img src="saveclusterdata.png"></center><br>Ticking this box and then pressing "Modify" produces a file which contains the following parameters for each cluster in the
 image.</p>
 <pre style="font-size:80%">  
-   ClustNo #Blinks #Points Area NND NearestArea SemiMinorAxis SemiMajorAxis...
+   ClustNo NumBlinks NumPoints Area NND NearestArea SemiMinorAxis SemiMajorAxis...
      ConvexHullArea NumSubClusters(nsb) SubClusterAreas(1..nsb)
 </pre>
 <p>Values are separated by a space, one line per cluster. The lines have a variable length dependent on the number of subclusters. 
 The data is saved as an ASCII text file in the same directory as the blink file. If the blink data file is named fn.3dSTM 
 the cluster data file will be named fn_NL[NL value].clustval where NL is the current neighbourhood limit (eg. fn_NL100.clustval)
-<h3 id="allclusterblinks">Saving cluster blinks</h3>
-<p><img src="saveclusterblinks.png"><br>Ticking this box and then pressing "Modify" produces a file which contains the following parameters for each cluster in the
-blink in a cluster that satisfied the conditions set in the program.</p>
-<pre style="font-size:80%">  
-   ClustNo X Y FrameNo Amplitude LogDensity
-</pre>
-<p>Values are separated by a tab, one line per blink.  
-The data is saved as an ASCII text file in the same directory as the blink file. If the blink data file is named fn.3dSTM 
-the cluster blink file will be named fn.clustblinks. This file was used to generate data sets or TIF images for calculating the resolution 
-using the Fourier Ring Correlation. NOTE: This file only has to be saved once for a set of parameters 
-<a href="./computation.html#SCD">Computational Parameters</a> as it is independent of the neighbourhood limit.</p>
 </body>
 </html>

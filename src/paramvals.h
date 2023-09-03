@@ -11,7 +11,6 @@ struct ParamVals
     double LogDensityThreshold;
     uint MinimumBlinksPerCluster;
     bool SaveClusterData;
-    bool SaveClusterBlinks;
     bool DispNoThreshold;
     bool DispExcludedData;
     bool DispNumbers;

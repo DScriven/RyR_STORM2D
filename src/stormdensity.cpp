@@ -134,7 +134,6 @@ void STORMdensity::CalculateStructure(QString File, ParamVals ParameterValues)
     displayConvexHull = ParameterValues.DispConvexHull;
     displayMinEllipse = ParameterValues.DispMinEllipse;
     bSaveClusterData = ParameterValues.SaveClusterData;
-    bSaveClusterBlinks = ParameterValues.SaveClusterBlinks;
 
  // set cluster statics
     Cluster::MinBlinksPerCluster = MinimumBlinksPerCluster;
@@ -275,11 +274,6 @@ void STORMdensity::NewClusterValues(ParamVals ParameterValues, int FrameMin, int
         bSaveClusterData = ParameterValues.SaveClusterData;
         Changes += (QString("Cluster Data ") + QString((bSaveClusterData) ? "IS " : "IS NOT ") + QString("being saved<br>"));
     }
-    if(bSaveClusterBlinks != ParameterValues.SaveClusterBlinks)
-    {
-        bSaveClusterBlinks = ParameterValues.SaveClusterBlinks;
-        Changes += (QString("Clusters ") + QString((bSaveClusterBlinks) ? "ARE " : "ARE NOT ") + QString("being saved<br>"));
-    }
     if(std::abs(NeighbourhoodLimit - ParameterValues.NeighbourhoodLimit) > DBL_EPSILON)
     {
         NeighbourhoodLimit = ParameterValues.NeighbourhoodLimit;
@@ -372,9 +366,6 @@ void STORMdensity::NewClusterValues(ParamVals ParameterValues, int FrameMin, int
     QString RedrawType;
     if(displayExcludedBlinks)
       RedrawType = "Points";
-
-    if(bSaveClusterBlinks)
-        writeClusterBlinks();
 
     if(bSaveClusterData)
        writeClusterData();
@@ -1208,8 +1199,6 @@ void STORMdensity::CalculateClusterProperties_2ndpass()
     emit AlertMsg(QString("<br>Input blinks = %1; Blink coordinates = %2; <br> Ratio = %3; Blink Density = %4/%5").arg(BlinksIn).arg(BlinkCoordinates).arg(BlinkRatio,0,'f',2).arg(BlinkDensity,0,'f',2).arg(AreaUnit),'m');
     emit AlertMsg(QString("Image dimensions: X = %1 nm - Y = %2 nm").arg(Limits.width()).arg(Limits.height()),'m');
     emit AlertMsg(QString("Total Area in clusters = %1 %2 <br> Area/ImageArea = %3 %; Cluster Density = %4/%5").arg(TotalClusterArea,0,'f',bdec).arg(AreaUnit).arg(Occupancy,0,'f',2).arg(ClusterDensity,0,'f',2).arg(AreaUnit),'m');
-    if(bSaveClusterBlinks)
-       writeClusterBlinks();
 }
 void STORMdensity::secondPass()
 {
@@ -1411,40 +1400,6 @@ bool STORMdensity::CalculateGroupAreas()
          emit AlertMsg(QString("Base Cluster %1 - area = %2 nm<sup>2</sup>").arg(i).arg(a.getArea()),'b');
        }
     }
-    return true;
-}
-bool STORMdensity::writeClusterBlinks()
-{
-    //Output points, cluster nos and density
-    QFileInfo fn(FileName);
-    QString fnameb = fn.canonicalPath() + "/" + fn.completeBaseName();
-    QString fnout = fnameb + ".clustblinks";
-    QFile rdata;
-    rdata.setFileName(fnout);
-    if(!rdata.open(QFile::WriteOnly))
-    {
-        emit AlertMsg(QString("Cannot open %1 for writing").arg(fnout),'r');
-        return false;
-    }
-    emit AlertMsg("Writing cluster blinks...\n",' ');
-
-    QTextStream rout(&rdata);
-    uint noC=uint(Clusters.size());
-    for(uint i1=0; i1 < noC; i1++)
-    {
-        std::vector<ClusterPoint> cpoints=Clusters[i1].getClustPoints();
-        uint np=uint(cpoints.size());
-        for(uint i2=0; i2 < np; i2++)
-        {
-            ClusterPoint cp=cpoints[i2];
-            int X = cp.posn.x();
-            int Y = cp.posn.y();
-            for (int i=0; i < cp.NoBlinks; i++)
-               rout << i1 << "\t" << X << "\t" << Y << "\t"  << cp.frame[i] << "\t" << cp.amp[i] << "\t" << cp.logdensity << "\n";
-        }
-    }
-    rdata.close();
-    emit AlertMsg(QString("Wrote %1 to disk").arg(fnout),' ');
     return true;
 }
 bool STORMdensity::writeClusterData()

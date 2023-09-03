@@ -1,118 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BlinkRegion</class>
- <widget class="QDialog" name="BlinkRegion">
+ <class>setDPI</class>
+ <widget class="QDialog" name="setDPI">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
-    <height>259</height>
+    <width>364</width>
+    <height>238</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Blink ROI</string>
+   <string>Tiff Mag &amp; DPI</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="glsl.qrc">
-    <normaloff>:/RyR_STORM2D.png</normaloff>:/RyR_STORM2D.png</iconset>
+   <iconset>
+    <normaloff>../../STORMdensity2D/src/STORMdensity2D.png</normaloff>../../STORMdensity2D/src/STORMdensity2D.png</iconset>
   </property>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLabel" name="lblHeader">
    <property name="geometry">
     <rect>
-     <x>114</x>
+     <x>89</x>
      <y>5</y>
-     <width>161</width>
+     <width>181</width>
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="text">
-    <string>Write Blink sub-file:</string>
+    <string>Set TIFF dpi &amp; size</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="lblImageSize">
    <property name="geometry">
     <rect>
-     <x>61</x>
-     <y>112</y>
-     <width>21</width>
+     <x>12</x>
+     <y>123</y>
+     <width>100</width>
      <height>25</height>
     </rect>
    </property>
    <property name="text">
-    <string>X</string>
+    <string>Image size</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLineEdit" name="leMagnify">
    <property name="geometry">
     <rect>
-     <x>61</x>
-     <y>142</y>
-     <width>21</width>
+     <x>165</x>
+     <y>40</y>
+     <width>60</width>
      <height>25</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Y</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
   </widget>
-  <widget class="QLineEdit" name="leFileName">
+  <widget class="QLineEdit" name="leDPI">
    <property name="geometry">
     <rect>
-     <x>49</x>
-     <y>34</y>
-     <width>291</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_7">
-   <property name="geometry">
-    <rect>
-     <x>117</x>
-     <y>86</y>
-     <width>41</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>min</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_8">
-   <property name="geometry">
-    <rect>
-     <x>224</x>
-     <y>90</y>
-     <width>41</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>max</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="leMinX">
-   <property name="geometry">
-    <rect>
-     <x>98</x>
-     <y>112</y>
-     <width>71</width>
+     <x>165</x>
+     <y>78</y>
+     <width>60</width>
      <height>25</height>
     </rect>
    </property>
@@ -120,57 +77,53 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLineEdit" name="leMaxX">
+  <widget class="QLineEdit" name="leWidth">
    <property name="geometry">
     <rect>
-     <x>203</x>
-     <y>112</y>
-     <width>81</width>
+     <x>115</x>
+     <y>123</y>
+     <width>60</width>
      <height>25</height>
     </rect>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="leMinY">
+  <widget class="QLineEdit" name="leHeight">
    <property name="geometry">
     <rect>
-     <x>98</x>
-     <y>145</y>
-     <width>71</width>
+     <x>205</x>
+     <y>123</y>
+     <width>60</width>
      <height>25</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QLineEdit" name="leMaxY">
-   <property name="geometry">
-    <rect>
-     <x>203</x>
-     <y>145</y>
-     <width>81</width>
-     <height>25</height>
-    </rect>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="lblFile1">
+  <widget class="QLabel" name="lblMag">
    <property name="geometry">
     <rect>
-     <x>7</x>
-     <y>36</y>
-     <width>40</width>
+     <x>65</x>
+     <y>40</y>
+     <width>91</width>
      <height>25</height>
     </rect>
    </property>
    <property name="text">
-    <string>File :</string>
+    <string>Magnification</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="pbWriteROI">
+  <widget class="QPushButton" name="pbCreateTIFF">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>190</y>
+     <x>71</x>
+     <y>170</y>
      <width>100</width>
      <height>41</height>
     </rect>
@@ -240,14 +193,14 @@
     </palette>
    </property>
    <property name="text">
-    <string>Write ROI</string>
+    <string>Create TIFF</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pbCancel">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>190</y>
+     <x>231</x>
+     <y>180</y>
      <width>71</width>
      <height>30</height>
     </rect>
@@ -293,9 +246,59 @@
     <string>Cancel</string>
    </property>
   </widget>
+  <widget class="QLabel" name="lblDPI">
+   <property name="geometry">
+    <rect>
+     <x>105</x>
+     <y>80</y>
+     <width>50</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DPI</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cmbUnit">
+   <property name="geometry">
+    <rect>
+     <x>275</x>
+     <y>120</y>
+     <width>51</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>in</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>cm</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="lblX">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>123</y>
+     <width>21</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>X</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
  </widget>
- <resources>
-  <include location="glsl.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

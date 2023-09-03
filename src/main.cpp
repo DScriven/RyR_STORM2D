@@ -2,7 +2,7 @@
 * RyR_STORM2D is a program designed to analyse blink data from the surface of ventricular
 * myocytes.
 *
-* Copyright David Scriven, 2022.
+* Copyright David Scriven, 2022, 2023.
 *
 * Moore Laboratory, Life Sciences Institute,  2350 Health Sciences
 * Mall, University of British Columbia, Vancouver, Canada, V6T 1Z3
@@ -15,10 +15,11 @@
 *        cluster.cpp & cluster.h
 *        param.cpp & param.h
 *        stormdensity.cpp & stormdensity.h
+*        setDPI.cpp &setDPI.h
 *        tiff6qt.cpp & tiff6.h
 *        viewclusters.cpp & viewclusters.h
 *
-* This program can be compiled for Windows 10 or a Linux operating system.
+* This program can be compiled for Windows 10 and 11 or a Linux operating system.
 *
 * RyR_STORM2D links to the proprietary Qt system (currently ver 5.15.2) as well as the the free
 * CGAL algorithmic library and the free TIFF library. It also requires OpenGL ver 4.3 or higher.
@@ -73,7 +74,7 @@ int main(int argc, char *argv[])
     }
 #else
     QCoreApplication::setApplicationName("RyR_STORM2D.exe");
-    QCoreApplication::setApplicationVersion("1.1");
+    QCoreApplication::setApplicationVersion("1.3");
     QCoreApplication::setOrganizationName("Moore Lab, Life Sciences Inst., Univ. British Columbia");
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 #endif

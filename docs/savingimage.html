@@ -17,16 +17,20 @@
 <body>
 <h2>Saving the blink image</h2>
 <p>The image can be saved in two ways - either as a screenshot of the image or as a hi-res image 
-whose size can be a multiple of of the maximum screen size.</p>
+whose size is virtually unlimited and with a resolution of up to 1000 dpi (dots per inch).</p>
 <h3 id="screenshot">Saving a TIFF screenshot</h3>
 <b>F12</b> saves a copy of the blink image as it currently appears. The resolution of the TIFF image (dpi) is the same as the 
 screen dpi. The name of the image is fn_p[n].tiff where n is a number counting the saved images, so images do not overwrite each other. 
 Thus RyRIso_5.3dSTM could generate the name RyRIso_5_p1.tiff.</p>  
 <h3 id="hires">Saving a Hi-res Zoomed Image</h3>
-<p>Large images often appear on the screen greatly reduced in size with multiple blinks in the same pixel. The <b>Alt + F12</b> 
-command allows the user to record a zoomed version of the full image at Hi-Res (300 dpi). The best way to use this is to zoom into 
-an image until you get the level of detail you require and note that zoom value (IZ). Press <b>Alt + F12</b> and a box will appear 
-into which the user can enter IZ. The program will then use a frame buffer to generate a full image that is IZ times the initial image size.    
-The naming is the same as for the screenshot.</p>
+<p>Screenshots, even on hi-res screens do not provide a publication quality resolution (300 dpi or more). Increasing the
+dpi reduces the size of the image and so it might be necessary to magnify it. At screen resolution there are often multiple blinks 
+in the same pixel so magnification may be required to clarify the image. The <b>Alt + F12</b> 
+command brings up a menu that allows the user to set up the TIFF magnification and dpi.</p> 
+<center><img src="tiffmagdpi.png"></center>
+<p>Either pressing enter after entering a number or clicking on another box will calculate the size in inches or centimeters.</p>   
+<p>A second way to use the menu is to zoom into an image until you get the level of detail you require and note that zoom value (IZ). 
+Press <b>Alt + F12</b> and the menu will appear into which the user can enter IZ at the default dpi (300). The program will then use 
+a frame buffer to generate a full image that is IZ times the initial image size. The naming is the same as for the screenshot.</p>
 </body>
 </html>  

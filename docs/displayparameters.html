@@ -23,32 +23,32 @@
 <img src="displayparameters.png">
 <p></p>
 <h3 id="boundaries">Cluster Boundaries</h3>
-<img src="clusterboundaries.png">
-<p>The red lines shows the boundaries of the base (i.e 30 nm) clusters. The image was generated with an 
+<center><img src="clusterboundaries.png"></center>
+<p>The vermillion lines shows the boundaries of the base (i.e 30 nm) clusters. The image was generated with an 
 <a href="computation.html#alpha">alpha</a> of 700.</p>Decreasing the alpha tightens the fit and follows the perimeter contour more tightly
 as well causing some small holes to appear, while increasing the alpha has the opposite effect.</p> 
 <h3 id="hull">Convex Hull</h3>
-<img src="convexhull.png">
-<p>The convex hull (blue lines) outlines the minimum polygon that will envelop a cluster group. It is the best way to visually determine
-the boundaries of the cluster groups as the <a href="computation.html#NL">neighbourhood limit</a> is increased.</p>
+<center><img src="convexhull.png"></center>
+<p>The convex hull (skyblue lines) outlines the minimum polygon that will envelop a cluster group. It is the best way to visually determine
+the boundaries of the cluster groups as the <a href="computation.html#NL">neighbourhood limit (NL)</a> is increased.
+The hulls represent a NL of 50 nm. </p>
 <h3 id="ellipse">Minimum Ellipse</h3>
-<img src="min_ellipse.png">
-<p>The minimum ellipse (green lines) allows an estimate in the changes in shape that occur on phosphorylation with isoproterenol. The 
-minimum ellipse always contains the convex hull.</p>
+<center><img src="min_ellipse.png"></center>
+<p>The minimum ellipse (bluish-green lines) allows an estimate in the changes in shape that occur on phosphorylation with isoproterenol. The 
+minimum ellipse always contains the convex hull. The ellipses represent a NL of 50 nm.</p>
 <h3 id="excluded">Excluded Blinks</h3>
-<img src="excludedblinks.png">
+<center><img src="excludedblinks.png"></center>
 <p>The purple blinks represent those excluded during the fitting process as having <a href="computation.html#minblinks">too few blinks</a>
-or being <a href="computation.html#minarea">too small</a> to be a tetramer. The actual size is smaller than shown here; the pixel size has been increased to 
-3x3 (<keybd> Alt + F10</keybd>) so that the points can be visualized.</p>
+or being <a href="computation.html#minarea">too small</a> to be a tetramer. The actual size is smaller than shown here; the blink size has been 
+increased to 3x3 pixels (<keybd> Alt + F10</keybd>) so that the points can be visualized.</p>
 <h3 id="threshold">Log Threshold</h3>
-<img src="logThreshInput.png">
-<p>To isolate regions of high blink density you can use the Log Threshold. All pixels below this threhold are in green while those 
-above are in red - as in the image below.</p> 
-<img src="logthreshold.png">
+<center><img src="logThreshInput.png"></center>
+<p>To isolate regions of high blink density you can use the Log Threshold. All pixels below this threshold are in skyblue while those 
+above are in vermillion - as in the image below. In this case the Log Threshold is -1.6.</p> 
+<center><img src="logthreshold.png"></center>
 <p>This threshold is image-wide so you may have to adjust it for certain clusters.</p>
 <h3 id="CNum">Cluster Numbers</h3>
-<img src="numbers.png">
-<p>Displays the numbers associated with each cluster.</p>
-
+<center><img src="numbers.png"></center>
+<p>Displays the numbers associated with each cluster. These numbers will change as the NL changes; those shown are for an NL of 50nm.</p>
 </body>
 </html>

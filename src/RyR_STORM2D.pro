@@ -19,6 +19,7 @@ SOURCES += \
     main.cpp \
     cluster.cpp \
     param.cpp \
+    setDPI.cpp \
     stormdensity.cpp \
     tiff6qt.cpp \
     viewclusters.cpp
@@ -30,6 +31,7 @@ HEADERS += \
     cluster.h \
     param.h \
     paramvals.h \
+    setDPI.h \
     stormdensity.h \
     tetramer.h \
     tiff6qt.h \
@@ -37,7 +39,8 @@ HEADERS += \
     viewclusters.h
 
 FORMS = param.ui \
-    blinkroi.ui
+    blinkroi.ui \
+    setDPI.ui
 
 RESOURCES = glsl.qrc
 

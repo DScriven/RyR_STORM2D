@@ -2,7 +2,7 @@
 * RyR_STORM2D is a program designed to analyse blink data from ryanodine receptors on the
 * surface of ventricular cardiomyocytes.
 *
-* Copyright David Scriven, 2022.
+* Copyright David Scriven, 2022, 2023.
 *
 * Moore Laboratory, Life Sciences Institute,  2350 Health Sciences
 * Mall, University of British Columbia, Vancouver, Canada, V6T 1Z3
@@ -28,6 +28,7 @@
 #include "cluster.h"
 #include "viewclusters.h"
 #include "blinkroi.h"
+#include "setDPI.h"
 #include "tiff6qt.h"
 #include <algorithm>
 #include <QMenu>
@@ -150,8 +151,8 @@ void ViewClusters::initValues()
 {
     fZoom = 1.0f;
     fZoomDelta = 0.25f;
-    PointSize = 1;
-    ExPointSize = 2;
+    BlinkSize = 1;
+    ExBlinkSize = 2;
     tetramerwidth=27;
     tetramerdiag=tetramerwidth/sqrt2;
     ImageOffset = Point_2(0,0);
@@ -192,11 +193,6 @@ void ViewClusters::Display()
     fXScreenMax = SD->ScreenSize.width()-550;
     fYScreenMax = SD->ScreenSize.height()-80;
     initValues();
-
-    if(SD->displayNoThreshold)
-        ThresholdColourIndex = 7;
-    else
-        ThresholdColourIndex = 0;
 
     float maxx=float(SD->Limits.width());
     float maxy=float(SD->Limits.height());
@@ -250,15 +246,15 @@ void ViewClusters::Display()
 }
 void ViewClusters::CreateScreenShot()
 {
-    CreateTIFF(XImageSize, YImageSize, BackBuffer);
+    CreateTIFF(XImageSize, YImageSize, BackBuffer, SD->ScreenDPI, fZoom);
 }
 void ViewClusters::CreateFBOImage()
 {
-    bool ok;
-    fFBOZoom = QInputDialog::getDouble(nullptr, tr("FBO magnification"),
-                                         tr("FBO Magnification:"), 1.5, 1.05, 3.0, 2, &ok, Qt::WindowFlags(), 0.05);
-    if(!ok)
-      return;
+    TiffMagDPI* Tiffdpi=new TiffMagDPI(this);
+    Tiffdpi->displayMenu(InitXImage, InitYImage);
+}
+void ViewClusters::FBOTiff(double fFBOZoom, int ImageDPI)
+{
     QOpenGLContext* ctx = context();
     QOffscreenSurface* offsurf = new QOffscreenSurface();
     QSurfaceFormat format;
@@ -284,7 +280,7 @@ void ViewClusters::CreateFBOImage()
     invtransform = transform.inverted();
     glViewport(0,0,FullXdim,FullYdim);
     paintGL();
-    CreateTIFF(FullXdim, FullYdim, FrameBuffer);
+    CreateTIFF(FullXdim, FullYdim, FrameBuffer, ImageDPI, fFBOZoom);
     ctx->doneCurrent();
     image_fbo->release();
     delete image_fbo;
@@ -383,8 +379,8 @@ void ViewClusters::displayClusterInfo(uint cno)
     std::tuple<double,double> el = c.getEllipseData();
 //    double Eccentricity = std::get<0>(el)/std::get<1>(el);
     double cArea = c.getArea();
-    double BlinkDensity = c.getNoBlinks()/cArea;
-    double PointDensity = c.getClustSize()/cArea;
+    double BlinkDensity = c.getNoBlinks()*1000000.0/cArea;
+    double PointDensity = c.getClustSize()*1000000.0/cArea;
     QString cinfo[9];
     int nString = 6;
     int nSubClustOffset =0;
@@ -396,8 +392,8 @@ void ViewClusters::displayClusterInfo(uint cno)
     }
     cinfo[0] = QString("Cluster No. %1 - Neighbourhood Limit = %2 nm").arg(c.getClustNo()).arg(SD->NeighbourhoodLimit);
     cinfo[1] = QString("Area = %1 nm<sup>2</sup> -- Alpha = %2 -- Convex Hull Area = %3 nm<sup>2</sup>").arg(cArea).arg(SD->Alpha1stPass).arg(c.getConvexHullArea());
-    cinfo[2] = QString("# Blinks = %1 - Density = %2").arg(c.getNoBlinks()).arg(BlinkDensity,0,'f',3);
-    cinfo[3] = QString("# Points = %1 - Density = %2").arg(c.getClustSize()).arg(PointDensity,0,'f',3);
+    cinfo[2] = QString("# Blinks = %1 - Density = %2/&mu;m<sup>2</sup>").arg(c.getNoBlinks()).arg(BlinkDensity,0,'f',0);
+    cinfo[3] = QString("# Points = %1 - Density = %2/&mu;m<sup>2</sup>").arg(c.getClustSize()).arg(PointDensity,0,'f',0);
     if(nSubClustOffset > 0)
     {
        std::vector<std::pair<uint, double>> sc = c.getBaseClusterInfo();
@@ -437,32 +433,32 @@ void ViewClusters::imageLine()
        StartPt = EndPt = Point_2(0.0f,0.0f);
     update();
 }
-void ViewClusters::increasePointSize()
+void ViewClusters::increaseBlinkSize()
 {
-    PointSize += 1;
-    emit AlertMsg(QString("PointSize = %1").arg(PointSize),'b');
+    BlinkSize += 1;
+    emit AlertMsg(QString("Blink Size = %1x%1 pixels").arg(BlinkSize),'b');
     update();
 }
-void ViewClusters::increaseExPointSize()
+void ViewClusters::increaseExBlinkSize()
 {
-    ExPointSize += 1;
-    emit AlertMsg(QString("Excluded Points Size = %1").arg(ExPointSize),'b');
+    ExBlinkSize += 1;
+    emit AlertMsg(QString("Excluded Blinks Size = %1x%1 pixels").arg(ExBlinkSize),'b');
     update();
 }
-void ViewClusters::decreasePointSize()
+void ViewClusters::decreaseBlinkSize()
 {
-    if(PointSize == 1)
+    if(BlinkSize == 1)
       return;
-    PointSize -= 1;
-    emit AlertMsg(QString("PointSize = %1").arg(PointSize),'b');
+    BlinkSize -= 1;
+    emit AlertMsg(QString("Blink Size = %1x%1 pixels").arg(BlinkSize),'b');
     update();
 }
-void ViewClusters::decreaseExPointSize()
+void ViewClusters::decreaseExBlinkSize()
 {
-    if(ExPointSize == 1)
+    if(ExBlinkSize == 1)
       return;
-    ExPointSize -= 1;
-    emit AlertMsg(QString("Excluded Points Size = %1").arg(ExPointSize),'b');
+    ExBlinkSize -= 1;
+    emit AlertMsg(QString("Excluded Blinks Size = %1x%1 pixels").arg(ExBlinkSize),'b');
     update();
 }
 void ViewClusters::keyPressEvent( QKeyEvent *e )
@@ -546,17 +542,17 @@ void ViewClusters::keyPressEvent( QKeyEvent *e )
     case Qt::Key_F9:
         saveTetramerFile();
         break;
-    case Qt::Key_F10:      //Increase Image Pointsize
+    case Qt::Key_F10:      //Increase Image BlinkSize
         if (e->modifiers() & Qt::AltModifier)
-            increaseExPointSize();
+            increaseExBlinkSize();
         else
-            increasePointSize();
+            increaseBlinkSize();
         break;
-    case Qt::Key_F11:     //Decrease Image Pointsize
+    case Qt::Key_F11:     //Decrease Image BlinkSize
         if (e->modifiers() & Qt::AltModifier)
-            decreaseExPointSize();
+            decreaseExBlinkSize();
         else
-            decreasePointSize();
+            decreaseBlinkSize();
         break;
     case Qt::Key_F12:    //Create Tiff Image
         if (e->modifiers() & Qt::AltModifier)
@@ -1529,39 +1525,28 @@ void ViewClusters::initShaders()
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(blinkdata), reinterpret_cast<GLvoid*>(doff));
     vsp_vbo.release();
 
-/*
-    //  Cluster colours
-    const QVector4D ClustColor[7] = {
-        {1.0f,0.0f,0.0f,1.0f}, // red
-        {0.0f,0.0f,1.0f,1.0f}, // blue
-        {0.0f,1.0f,1.0f,1.0f}, // cyan
-        {1.0f,0.0f,1.0f,1.0f}, // magenta
-        {0.0f,1.0f,0.0f,1.0f}, // green
-        {1.0f,1.0f,0.0f,1.0f}, // yellow
-        {0.0f,0.0f,0.0f,1.0f}  // black
-    };
-    int CCol=colclust->uniformLocation("ClustColor");
-    colclust->setUniformValueArray(CCol,ClustColor,7);
-*/
-    const QVector4D DensityColor[8] = {
-        {1.0f, 1.0f, 1.0f, 1.0f},    //white
-        {1.0f, 1.0f, 0.0f, 1.0f},    //yellow
-        {0.0f, 1.0f, 1.0f, 1.0f},    //cyan
-        {0.0f, 1.0f, 0.0f, 1.0f},    //green
-        {1.0f, 0.65f, 0.0f, 1.0f},   //orange
-        {1.0f, 0.0f, 0.0f, 1.0f},    //red
-        {1.0f, 0.0f, 1.0f, 1.0f},    //magenta
-        {0.0f, 0.0f, 0.0f, 1.0f}     //black
-     };
+    CUD_Colours[0] = QVector4D(0.0f,0.0f,0.0f,1.0f);           // black
+    CUD_Colours[1] = QVector4D(0.902f, 0.624f, 0.0f, 1.0f);    // orange
+    CUD_Colours[2] = QVector4D(0.337f, 0.706f, 0.913f, 1.0f);  // skyblue
+    CUD_Colours[3] = QVector4D(0.0f, 0.62f, 0.451f,1.0f);      // bluegreen
+    CUD_Colours[4] = QVector4D(0.941f, 0.894f, 0.259f, 1.0f);  // yellow
+    CUD_Colours[5] = QVector4D(0.f, 0.447f, 0.698f, 1.0f);     // blue
+    CUD_Colours[6] = QVector4D(0.835f, 0.369f, 0.f,1.0f);      // vermillion
+    CUD_Colours[7] = QVector4D(0.8f, 0.475f, 0.655f, 1.0f);    // redpurple
+
+    QVector4D DensityColor[8];
+    for(int jk = 0; jk < 8; jk++)
+       DensityColor[jk] = CUD_Colours[jk];
 
     int DCol=colclust->uniformLocation("DensityColor");
     colclust->setUniformValueArray(DCol,DensityColor,8);
 
-    PointSizeLoc=colclust->uniformLocation("PointSize");
+    BlinkSizeLoc=colclust->uniformLocation("BlinkSize");
     TransformColClustLoc=colclust->uniformLocation("transform");
 
     DenThresholdLoc=colclust->uniformLocation("denThreshold");
-    ThresholdColourIndexLoc=colclust->uniformLocation("ThresholdColourIndex");
+    AboveThresholdColourIndexLoc=colclust->uniformLocation("AboveThresholdColourIndex");
+    BelowThresholdColourIndexLoc=colclust->uniformLocation("BelowThresholdColourIndex");
 
     vao_blinks.release();
 
@@ -1599,7 +1584,7 @@ void ViewClusters::initShaders()
 
     TransformBoundClustLoc=boundclust->uniformLocation("transform");
     BoundaryColourLoc=boundclust->uniformLocation("BoundaryColour");
-    ExPointSizeLoc=boundclust->uniformLocation("ExPointSize");
+    ExBlinkSizeLoc=boundclust->uniformLocation("ExBlinkSize");
 
     vao_bounds.release();
 
@@ -1731,26 +1716,6 @@ void ViewClusters::initShaders()
 
     singletetramer_vbo.release();
     vao_singletetramer.release();
-
-/*
-    Colours[0] = QVector4D(0.,0.,0.,1.); // black
-    Colours[1] = QVector4D(0.902, 0.624, 0.0, 1.0); // orange
-    Colours[2] = QVector4D(0.337, 0.706, 0.913, 1.0); // skyblue
-    Colours[3] = QVector4D(0., 0.62, 0.451,1.0); // bluegreen
-    Colours[4] = QVector4D(0.941, 0.894, 0.259, 1.0); //yellow
-    Colours[5] = QVector4D(0., 0.447, 0.698, 1.0); // blue
-    Colours[6] = QVector4D(0.835, 0.369, 0.,1.0); // vermillion
-    Colours[7] = QVector4D(0.8, 0.475, 0.655, 1.0); // redpurple
-*/
-    CUD_Colours[0] = {0.f,0.f,0.f,1.f}; //black
-    CUD_Colours[1] = {0.902f, 0.624f, 0.0f, 1.0f}; // orange
-    CUD_Colours[2] = {0.337f, 0.706f, 0.913f, 1.0f}; // skyblue
-    CUD_Colours[3] = {0.f, 0.62f, 0.451f,1.0f}; // bluegreen
-    CUD_Colours[4] = {0.941f, 0.894f, 0.259f, 1.0f}; //yellow
-    CUD_Colours[5] = {0.f, 0.447f, 0.698f, 1.0f}; // blue
-    CUD_Colours[6] = {0.835f, 0.369f, 0.f,1.0f}; // vermillion
-    CUD_Colours[7] = {0.8f, 0.475f, 0.655f, 1.0f}; // redpurple
-
 }
 void ViewClusters::paintGL()
 {
@@ -1767,7 +1732,7 @@ void ViewClusters::paintGL()
     {
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(1, 1, 1, 1);
-        transparency = 0.5f;
+        transparency = 0.65f;
     }
     glClear(GL_COLOR_BUFFER_BIT);
     glLineWidth(2.0f);
@@ -1778,16 +1743,19 @@ void ViewClusters::paintGL()
         if(SD->displayNoThreshold)
         {
             denThreshold = 3.0f;
-            ThresholdColourIndex = 7;
+            AboveThresholdColourIndex = black;
+            BelowThresholdColourIndex = black;
         }
         else
         {
             denThreshold=float(SD->LogDensityThreshold);
-            ThresholdColourIndex = 3;
+            AboveThresholdColourIndex = vermillion;
+            BelowThresholdColourIndex = skyblue;
         }
-        colclust->setUniformValue(PointSizeLoc, float(PointSize));
+        colclust->setUniformValue(BlinkSizeLoc, float(BlinkSize));
         colclust->setUniformValue(DenThresholdLoc, denThreshold);
-        colclust->setUniformValue(ThresholdColourIndexLoc, ThresholdColourIndex);
+        colclust->setUniformValue(AboveThresholdColourIndexLoc, AboveThresholdColourIndex);
+        colclust->setUniformValue(BelowThresholdColourIndexLoc, BelowThresholdColourIndex);
         colclust->setUniformValueArray(TransformColClustLoc,&transform, 1);
 
         glMultiDrawArrays(GL_POINTS,vs_start,vs_count,GLsizei(nValidClusters));
@@ -1803,7 +1771,7 @@ void ViewClusters::paintGL()
         {
             vao_exblinks.bind();
             BoundaryColour=QVector4D(1.0,0.0,1.0,1.0);
-            boundclust->setUniformValue(ExPointSizeLoc, float(ExPointSize));
+            boundclust->setUniformValue(ExBlinkSizeLoc, float(ExBlinkSize));
             boundclust->setUniformValue(BoundaryColourLoc, BoundaryColour);
             glDrawArrays(GL_POINTS,0,nExBlinks);
             vao_exblinks.release();
@@ -1813,10 +1781,10 @@ void ViewClusters::paintGL()
         if(SD->displayBoundary)
         {
             vao_bounds.bind();
-            if(SD->displayNoThreshold) // || SD->displayConvexHull)
-                BoundaryColour=QVector4D(1.0,0.0,0.0,1.0);
+            if(SD->displayNoThreshold)
+                BoundaryColour= CUD_Colours[vermillion]; //QVector4D(1.0,0.0,0.0,1.0);
             else
-                BoundaryColour=QVector4D(0.0,0.0,1.0,1.0);
+                BoundaryColour= CUD_Colours[blue]; //QVector4D(0.0,0.0,1.0,1.0);
             boundclust->setUniformValue(BoundaryColourLoc, BoundaryColour);
             glMultiDrawArrays(GL_LINES,bn_start,bn_count,GLsizei(nValidBoundarySegs));
             vao_bounds.release();
@@ -1826,7 +1794,7 @@ void ViewClusters::paintGL()
         if(SD->displayConvexHull)
         {
             vao_hull.bind();
-            BoundaryColour=QVector4D(0.0,0.0,1.0,1.0);
+            BoundaryColour=CUD_Colours[skyblue];
             boundclust->setUniformValue(BoundaryColourLoc, BoundaryColour);
             glMultiDrawArrays(GL_LINE_LOOP,hl_start,hl_count,GLsizei(nValidHulls));
             vao_hull.release();
@@ -1835,7 +1803,7 @@ void ViewClusters::paintGL()
         if(SD->displayMinEllipse)
         {
             vao_ellipse.bind();
-            BoundaryColour=QVector4D(0.0,1.0,0.0,1.0);
+            BoundaryColour=CUD_Colours[bluegreen];
             boundclust->setUniformValue(BoundaryColourLoc, BoundaryColour);
             glMultiDrawArrays(GL_LINE_LOOP,el_start,el_count,GLsizei(nValidEllipses));
             vao_ellipse.release();
@@ -1952,6 +1920,8 @@ void ViewClusters::paintGL()
     }
 
     p.end();
+    raise();
+    setWindowState(Qt::WindowActive);
 }
 void ViewClusters::loadBlinkData()
 {
@@ -2169,15 +2139,14 @@ void ViewClusters::loadTetramerData()
     if (nPalette == 1)
     {
         PlacingColor = QVector3D(1.0f,1.0f,1.0f);
-        UnlabeledColor = QVector3D(0.7f,0.0f,0.0f);
-        ChkrboardColor = QVector3D(0.0f,1.0f,0.0f);
+        UnlabeledColor = QVector3D(CUD_Colours[orange]);
     }
     else
     {
-        PlacingColor = QVector3D(1.0f,0.0f,0.0f);
-        UnlabeledColor = QVector3D(0.0f,0.7f,0.0f);
-        ChkrboardColor = QVector3D(0.0f,1.0f,0.0f);
+        PlacingColor = QVector3D(CUD_Colours[vermillion]);
+        UnlabeledColor = QVector3D(CUD_Colours[bluegreen]);
     }
+    ChkrboardColor = QVector3D(CUD_Colours[bluegreen]);
     int j = 0;
     for(int i = 0; i < int(nNoTetramers); i++)
     {
@@ -2194,13 +2163,13 @@ void ViewClusters::loadTetramerData()
                 tcolor=ChkrboardColor;
                 break;
             case 's':
-                tcolor=QVector3D(1.0,1.0,0.0);
+                tcolor=QVector3D(CUD_Colours[yellow]);
                 break;
             case 'i':
-                tcolor=QVector3D(0.0,1.0,1.0);
+                tcolor=QVector3D(CUD_Colours[blue]);
                 break;
             case 'b':
-                tcolor=QVector3D(1.0,0.0,1.0);
+                tcolor=QVector3D(CUD_Colours[redpurple]);
                 break;
             default:
                 tcolor=PlacingColor;
@@ -2328,7 +2297,8 @@ void ViewClusters::saveTetramerFile()
        uint clustNo = TetMappedCluster[jk];
        double area = SD->Clusters[clustNo].getArea();
        uint noTets = Tetcount[clustNo];
-       cs=QString("Cluster %1 has area %2 and contains %3 tetramers").arg(clustNo).arg(area).arg(noTets);
+       double percentCoverage = 100.0*noTets*tetramerwidth*tetramerwidth/area;
+       cs=QString("Cluster %1 has area %2 and contains %3 tetramers covering %4 %").arg(clustNo).arg(area).arg(noTets).arg(percentCoverage);
        nnout << qPrintable(cs) << "\n";
        emit AlertMsg(cs,'b');
     }
@@ -2448,16 +2418,16 @@ void ViewClusters::createMenus()
     saveTetramerFileAct = new QAction(tr("Save Tetramer File {F9}"),this);
     connect(saveTetramerFileAct, SIGNAL(triggered()), this, SLOT(saveTetramerFile()));
 
-    increasePointSizeAct = new QAction(tr("Increase Point Size {F10}"),this);
-    connect(increasePointSizeAct, SIGNAL(triggered()), this, SLOT(increasePointSize()));
+    increaseBlinkSizeAct = new QAction(tr("Increase Blink Size {F10}"),this);
+    connect(increaseBlinkSizeAct, SIGNAL(triggered()), this, SLOT(increaseBlinkSize()));
 
-    decreasePointSizeAct = new QAction(tr("Decrease Point Size {F11}"),this);
-    connect(decreasePointSizeAct, SIGNAL(triggered()), this, SLOT(decreasePointSize()));
+    decreaseBlinkSizeAct = new QAction(tr("Decrease Blink Size {F11}"),this);
+    connect(decreaseBlinkSizeAct, SIGNAL(triggered()), this, SLOT(decreaseBlinkSize()));
 
     createScreenShotAct = new QAction(tr("Save TIFF screenshot {F12}"),this);
     connect(createScreenShotAct, SIGNAL(triggered()), this, SLOT(CreateScreenShot()));
 
-    createFBOImageAct = new QAction(tr("Save Hi-Res Zoomed image {Alt + F12}"),this);
+    createFBOImageAct = new QAction(tr("Save Hi-Res & Zoomed TIFF {Alt + F12}"),this);
     connect(createFBOImageAct, SIGNAL(triggered()), this, SLOT(CreateFBOImage()));
 
     LineAct = new QAction(tr("Measure Distance {l}"),this);
@@ -2495,8 +2465,8 @@ void ViewClusters::createMenus()
     imageMenu->addAction(createScreenShotAct);
     imageMenu->addAction(createFBOImageAct);
     imageMenu->addSeparator();
-    imageMenu->addAction(increasePointSizeAct);
-    imageMenu->addAction(decreasePointSizeAct);
+    imageMenu->addAction(increaseBlinkSizeAct);
+    imageMenu->addAction(decreaseBlinkSizeAct);
     imageMenu->addSeparator();
     imageMenu->addAction(ROIAct);
     imageMenu->addSeparator();
@@ -2519,14 +2489,14 @@ void ViewClusters::createMenus()
     tetramerMenu->addAction(IsolateTetramersAct);
     tetramerMenu->addAction(saveTetramerFileAct);
 }
-void ViewClusters:: CreateTIFF(int XSize, int YSize, int imagetype)
+void ViewClusters:: CreateTIFF(int XSize, int YSize, int imagetype, int DPI, double Magnification)
 {
    double ActualPixelSize = PixelSize;
    if(imagetype == BackBuffer)  // Screenshot
        emit AlertMsg(QString("Creating Screenshot image (%1 x %2) as TIFF ....").arg(XSize).arg(YSize),' ');
    else
    {
-       ActualPixelSize = PixelSize/fFBOZoom;
+       ActualPixelSize = SD->Limits.width()/(Magnification*InitXImage);
        emit AlertMsg(QString("Creating FBO image (%1 x %2) as TIFF ....").arg(XSize).arg(YSize),' ');
    }
    int nNoRGBABytes = XSize*YSize*4;
@@ -2587,18 +2557,16 @@ void ViewClusters:: CreateTIFF(int XSize, int YSize, int imagetype)
        picno++;
    }
 
-   QString Description = QString("RyR_STORM2D image : Pixel size = %1 nm").arg(ActualPixelSize,0,'f',1);
-   if(SD->displayConvexHull || SD->displayExcludedBlinks || SD->displayMinEllipse)
-     Description += QString("\nNeighbourhood Limit = %1 nm  - Minimum Blinks Per Cluster = %2 - Minimum Tetramer Size = %3 nm2").arg(SD->NeighbourhoodLimit).arg(SD->MinimumBlinksPerCluster).arg(SD->MinTetramerArea);
+   QString Description = QString("Blink File: %1\n").arg(OutputFile);
+   Description += QString("RyR_STORM2D image : Pixel size = %1 nm - Blink size = %2x%2 pixels - Magnification = %3\n").arg(ActualPixelSize,0,'f',1).arg(BlinkSize).arg(Magnification);
+   if(SD->displayConvexHull || SD->displayMinEllipse ||SD->displayBoundary || SD->displayExcludedBlinks)
+     Description += QString("Neighbourhood Limit = %1 nm  - Minimum Blinks Per Cluster = %2 - Minimum Tetramer Size = %3 nm2").arg(SD->NeighbourhoodLimit).arg(SD->MinimumBlinksPerCluster).arg(SD->MinTetramerArea);
    if(!SD->displayNoThreshold)
      Description += QString("\nLog Density Threshold = %1").arg(SD->LogDensityThreshold);
    TiffImage Tiff_Image;
    Tiff_Image.setOutputType(TIFF_RGBA_8bit);
    Tiff_Image.setDim(uint32(XSize), uint32(YSize), 1);
-   if(imagetype==BackBuffer)
-       Tiff_Image.setRes(SD->ScreenDPI,2);
-   else
-       Tiff_Image.setRes(300.0f,2);
+   Tiff_Image.setRes(DPI,2);
    Tiff_Image.setBytePointer(ScreenData);
    Tiff_Image.setDateTime(qPrintable(DateTimeInfo));
    Tiff_Image.setOrigin(0,0);
