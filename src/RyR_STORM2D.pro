@@ -49,7 +49,6 @@ LIBS += -ltiff -lboost_system -lgmp
 }
 win32 {
 
-RC_FILE = RyR_STORM2D_resource.rc
 LIBS += "C:/dev/CGAL-5.5.1/auxiliary/gmp/lib/gmp.lib"
 LIBS += "C:/dev/boost_1_74_0/lib64-msvc-14.2/libboost_system-vc142-mt-x64-1_74.lib"
 LIBS +=  "C:/dev/tiff-4.0.10/libtiff/libtiff.lib"

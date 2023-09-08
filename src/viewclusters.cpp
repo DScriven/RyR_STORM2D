@@ -152,7 +152,7 @@ void ViewClusters::initValues()
     fZoom = 1.0f;
     fZoomDelta = 0.25f;
     BlinkSize = 1;
-    ExBlinkSize = 2;
+    ExBlinkSize = 3;
     tetramerwidth=27;
     tetramerdiag=tetramerwidth/sqrt2;
     ImageOffset = Point_2(0,0);
@@ -408,7 +408,7 @@ void ViewClusters::displayClusterInfo(uint cno)
        cinfo[4]=SubClust;
     }
     cinfo[4+nSubClustOffset] = QString("NND = %1 nm - NearestArea = %2 nm<sup>2</sup>").arg(c.getNND(),0,'f',1).arg(c.getNearestArea(),0,'f',1);
-    cinfo[5+nSubClustOffset] = QString("Ellipse : Min = %1 nm - Max = %2 nm").arg(std::get<1>(el),0,'f',1).arg(std::get<0>(el),0,'f',1);
+    cinfo[5+nSubClustOffset] = QString("Min. Ellipse axes:<br> Semi-Minor = %1 nm - Semi-Major = %2 nm").arg(std::get<1>(el),0,'f',1).arg(std::get<0>(el),0,'f',1);
     if(nLabelledClusters  > 0)
     {
         auto search = Tetcount.find(cno);
